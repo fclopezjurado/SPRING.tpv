@@ -13,6 +13,7 @@ public class DatabaseSeederController {
     @Autowired
     public void setSeedService(DatabaseSeederService databaseSeederService) {
         this.databaseSeederService = databaseSeederService;
+        this.databaseSeederService.createDefaultAdmin();
     }
     
     public boolean existsYamlFile(String fileName) {
