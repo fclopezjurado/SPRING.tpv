@@ -94,6 +94,7 @@ public class DatabaseSeederService {
             if (adminSaved == null) {
                 userDao.save(admin);
                 authorizationDao.save(new Authorization(admin, Role.ADMIN));
+                
             }
         } catch (IOException e) {
             System.err.println("ERROR: File " + ADMIN_FILE + " doesn't exist or can't be opened");
