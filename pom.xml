@@ -73,7 +73,7 @@
 		
 		<!-- mvn install -Denvironment.type=stage -->
 		<profile>
-            <id>stage</id>
+            <id>stage-test</id>
             <activation>
                 <property>
                     <name>environment.type</name>
