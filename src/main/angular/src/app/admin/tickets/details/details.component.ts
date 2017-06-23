@@ -2,9 +2,9 @@
  * Created by fran lopez on 30/05/2017.
  */
 
-import {Component, OnInit} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {User} from '../../../shared/models/user.model';
-import {MdDialog, MdDialogConfig, MdDialogRef} from '@angular/material';
+import {MD_DIALOG_DATA, MdDialog, MdDialogRef} from '@angular/material';
 import {Ticket} from '../../shared/models/ticket.model';
 import {
     Shopping,
@@ -37,14 +37,13 @@ export class TicketDetailsDialog implements OnInit {
     shoppings: Shopping[];
     headers: Object;
     capitalizePipe: CapitalizePipe;
-    dialogConfig: MdDialogConfig;
     selected: Shopping;
 
-    constructor(public dialogRef: MdDialogRef<TicketDetailsDialog>, private httpService: HTTPService,
+    constructor(@Inject(MD_DIALOG_DATA) private data: { ticket: Ticket },
+                public dialogRef: MdDialogRef<TicketDetailsDialog>, private httpService: HTTPService,
                 private toastService: ToastService, private editShoppingDialog: MdDialog) {
         this.user = new User();
-        this.ticket = this.dialogRef._containerInstance.dialogConfig.data;
-        this.dialogConfig = new MdDialogConfig();
+        this.ticket = this.data.ticket;
         this.capitalizePipe = new CapitalizePipe();
         this.headers = [{name: this.capitalizePipe.transform(CODE_ATTRIBUTE_NAME, false)},
             {name: this.capitalizePipe.transform(AMOUNT_ATTRIBUTE_NAME, false)},
@@ -79,10 +78,10 @@ export class TicketDetailsDialog implements OnInit {
 
     onActivate(selection: any) {
         this.selected = selection.row;
-        this.dialogConfig.data = new Shopping(selection.row.id, selection.row.amount, selection.row.discount,
+        let shopping = new Shopping(selection.row.id, selection.row.amount, selection.row.discount,
             selection.row.description, selection.row.price, selection.row.state, selection.row.code,
             selection.row.ticket);
-        let dialogRef = this.editShoppingDialog.open(EditShoppingDialog, this.dialogConfig);
+        let dialogRef = this.editShoppingDialog.open(EditShoppingDialog, {data: {shopping: shopping}});
 
         dialogRef.afterClosed().subscribe(shopping => {
             this.editShopping(shopping);

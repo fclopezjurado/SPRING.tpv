@@ -10,7 +10,7 @@ import {
     DNI_ATTRIBUTE_NAME,
     EMAIL_ATTRIBUTE_NAME
 } from '../../../../shared/models/user.model';
-import {MdDialog, MdDialogConfig} from '@angular/material';
+import {MdDialog} from '@angular/material';
 import {UserDetailsDialog} from '../details/details.component';
 import {CapitalizePipe} from '../../../../shared/pipes/capitalize.pipe';
 
@@ -24,13 +24,11 @@ import {CapitalizePipe} from '../../../../shared/pipes/capitalize.pipe';
 export class ResultsComponent {
     results: User[];
     headers: Object;
-    dialogConfig: MdDialogConfig;
     onSelectedUser: EventEmitter<User>;
     onModifiedUser: EventEmitter<User>;
     capitalizePipe: CapitalizePipe;
 
     constructor(private userDetailsDialog: MdDialog) {
-        this.dialogConfig = new MdDialogConfig();
         this.onSelectedUser = new EventEmitter();
         this.onModifiedUser = new EventEmitter();
         this.capitalizePipe = new CapitalizePipe();
@@ -42,10 +40,9 @@ export class ResultsComponent {
     }
 
     onActivate(selection: any) {
-        this.dialogConfig.data = selection.row;
         this.onSelectedUser.emit(selection.row);
 
-        let dialogRef = this.userDetailsDialog.open(UserDetailsDialog, this.dialogConfig);
+        let dialogRef = this.userDetailsDialog.open(UserDetailsDialog, {data: {user: selection.row}});
         dialogRef.afterClosed().subscribe(user => {
             this.onModifiedUser.emit(user);
         });

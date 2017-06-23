@@ -2,9 +2,9 @@
  * Created by fran lopez on 16/05/2017.
  */
 
-import {Component, OnInit} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {User} from '../../../../shared/models/user.model';
-import {MdDialogRef} from '@angular/material';
+import {MD_DIALOG_DATA, MdDialogRef} from '@angular/material';
 import {UserForm} from '../../services/user-form.service';
 import {FormGroup} from "@angular/forms";
 
@@ -16,8 +16,9 @@ export class EditUserDialog implements OnInit {
     user: User;
     userForm: FormGroup;
 
-    constructor(public dialogRef: MdDialogRef<EditUserDialog>, private userFormService: UserForm) {
-        this.user = this.dialogRef._containerInstance.dialogConfig.data;
+    constructor(@Inject(MD_DIALOG_DATA) private data: { user: User },
+                public dialogRef: MdDialogRef<EditUserDialog>, private userFormService: UserForm) {
+        this.user = this.data.user;
         this.userFormService.setUser(this.user);
     }
 

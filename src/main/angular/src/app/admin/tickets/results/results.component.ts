@@ -9,7 +9,7 @@ import {
     CREATED_DATE_ATTRIBUTE_NAME,
     USER_ID_ATTRIBUTE_NAME
 } from '../../shared/models/ticket.model';
-import {MdDialog, MdDialogConfig} from '@angular/material';
+import {MdDialog} from '@angular/material';
 import {CapitalizePipe} from '../../../shared/pipes/capitalize.pipe';
 import {TicketDetailsDialog} from '../details/details.component';
 
@@ -23,13 +23,11 @@ import {TicketDetailsDialog} from '../details/details.component';
 export class ResultsComponent {
     results: Ticket[];
     headers: Object;
-    dialogConfig: MdDialogConfig;
     onSelect: EventEmitter<Ticket>;
     onModify: EventEmitter<Ticket>;
     capitalizePipe: CapitalizePipe;
 
     constructor(private userDetailsDialog: MdDialog) {
-        this.dialogConfig = new MdDialogConfig();
         this.onSelect = new EventEmitter();
         this.onModify = new EventEmitter();
         this.capitalizePipe = new CapitalizePipe();
@@ -40,10 +38,9 @@ export class ResultsComponent {
     }
 
     onActivate(selection: any) {
-        this.dialogConfig.data = selection.row;
         this.onSelect.emit(selection.row);
 
-        let dialogRef = this.userDetailsDialog.open(TicketDetailsDialog, this.dialogConfig);
+        let dialogRef = this.userDetailsDialog.open(TicketDetailsDialog, {data: {ticket: selection.row}});
         dialogRef.afterClosed().subscribe(user => {
             console.log(user);
         });

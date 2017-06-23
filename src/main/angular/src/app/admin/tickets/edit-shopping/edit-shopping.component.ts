@@ -2,9 +2,9 @@
  * Created by fran lopez on 13/06/2017.
  */
 
-import {Component, OnInit} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {Shopping} from '../../shared/models/shopping.model';
-import {MdDialogRef} from '@angular/material';
+import {MD_DIALOG_DATA, MdDialogRef} from '@angular/material';
 import {isNumeric} from "rxjs/util/isNumeric";
 import {ToastService} from "../../../shared/services/toast.service";
 import {TPVHTTPError} from "../../../shared/models/tpv-http-error.model";
@@ -23,9 +23,10 @@ export class EditShoppingDialog implements OnInit {
     stateCtrl: FormControl;
     filteredStates: any;
 
-    constructor(public dialogRef: MdDialogRef<EditShoppingDialog>,
+    constructor(@Inject(MD_DIALOG_DATA) private data: { shopping: Shopping },
+                public dialogRef: MdDialogRef<EditShoppingDialog>,
                 private httpService: HTTPService, private toastService: ToastService) {
-        this.shopping = this.dialogRef._containerInstance.dialogConfig.data;
+        this.shopping = this.data.shopping;
         this.stateCtrl = new FormControl();
     }
 

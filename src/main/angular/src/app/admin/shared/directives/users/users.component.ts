@@ -7,7 +7,7 @@ import {HTTPService} from '../../../../shared/services/http.service';
 import {TPVHTTPError} from '../../../../shared/models/tpv-http-error.model';
 import {ToastService} from '../../../../shared/services/toast.service';
 import {User} from '../../../../shared/models/user.model';
-import {MdDialog, MdDialogConfig} from '@angular/material';
+import {MdDialog} from '@angular/material';
 import {NewUserDialog} from '../new-user/new-user.component';
 import {isNull, isUndefined} from "util";
 
@@ -21,17 +21,14 @@ export class UsersComponent implements OnInit {
     results = [];
     endpoint: string;
     usersType: string;
-    dialogConfig: MdDialogConfig;
     selected: User;
 
     constructor(private httpService: HTTPService, private toastService: ToastService,
                 private newUserDialog: MdDialog) {
-        this.dialogConfig = new MdDialogConfig();
         this.selected = new User();
     }
 
     ngOnInit(): void {
-        this.dialogConfig.data = this.endpoint;
         this.httpService.get(this.endpoint).subscribe(
             results => this.results = results.data,
             error => this.handleError(error)
@@ -47,7 +44,7 @@ export class UsersComponent implements OnInit {
     }
 
     openNewUserDialog() {
-        let dialogRef = this.newUserDialog.open(NewUserDialog, this.dialogConfig);
+        let dialogRef = this.newUserDialog.open(NewUserDialog, {data: {endpoint: this.endpoint}});
         dialogRef.afterClosed().subscribe(user => {
             this.ngOnInit();
             console.log(user);

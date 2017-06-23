@@ -2,11 +2,11 @@
  * Created by fran lopez on 16/05/2017.
  */
 
-import {Component, OnInit} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {FormGroup} from '@angular/forms';
 import {User} from '../../../../shared/models/user.model';
 import {TPVHTTPError} from '../../../../shared/models/tpv-http-error.model';
-import {MdDialogRef} from '@angular/material';
+import {MdDialogRef, MD_DIALOG_DATA} from '@angular/material';
 import {ToastService} from '../../../../shared/services/toast.service';
 import {UserForm} from '../../services/user-form.service';
 import {HTTPService} from '../../../../shared/services/http.service';
@@ -20,10 +20,11 @@ export class NewUserDialog implements OnInit {
     userForm: FormGroup;
     endpoint: string;
 
-    constructor(public dialogRef: MdDialogRef<NewUserDialog>, private toastService: ToastService,
+    constructor(@Inject(MD_DIALOG_DATA) private data: { endpoint: string },
+                public dialogRef: MdDialogRef<NewUserDialog>, private toastService: ToastService,
                 private httpService: HTTPService, private userFormService: UserForm) {
         this.user = new User();
-        this.endpoint = this.dialogRef._containerInstance.dialogConfig.data;
+        this.endpoint = this.data.endpoint;
         this.userFormService.setUser(this.user);
     }
 
