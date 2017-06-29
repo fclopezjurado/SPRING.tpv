@@ -1,6 +1,6 @@
 package api.exceptions;
 
-public class NotFoundProductCodeInTicketException extends ApiException {
+public class TicketProductCodeNotFoundException extends ApiException {
 
     private static final long serialVersionUID = 8019654584133930287L;
 
@@ -8,11 +8,11 @@ public class NotFoundProductCodeInTicketException extends ApiException {
 
     public static final int CODE = 14;
 
-    public NotFoundProductCodeInTicketException() {
+    public TicketProductCodeNotFoundException() {
         this("");
     }
 
-    public NotFoundProductCodeInTicketException(String detail) {
+    public TicketProductCodeNotFoundException(String detail) {
         super(DESCRIPTION + ". " + detail, CODE);
     }
 

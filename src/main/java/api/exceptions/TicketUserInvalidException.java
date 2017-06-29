@@ -1,6 +1,6 @@
 package api.exceptions;
 
-public class TicketHasInvalidUserException extends ApiException {
+public class TicketUserInvalidException extends ApiException {
 
     private static final long serialVersionUID = -4328051169500985249L;
     
@@ -8,11 +8,11 @@ public class TicketHasInvalidUserException extends ApiException {
 
     public static final int CODE = 19;
     
-    public TicketHasInvalidUserException() {
+    public TicketUserInvalidException() {
         this("");
     }
     
-    public TicketHasInvalidUserException(String detail) {
+    public TicketUserInvalidException(String detail) {
         super(DESCRIPTION + ". " + detail, CODE);
     }
    

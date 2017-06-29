@@ -1,7 +1,7 @@
 package api.exceptions;
 
+//TODO Eliminar
 public class ApiException extends Exception {
-
     private static final long serialVersionUID = 1613504205825647750L;
 
     private static final String URL = "https://github.com/miw-upm/SPRING.tpv/wiki/Exceptions#";

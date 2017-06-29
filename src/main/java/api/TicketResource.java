@@ -17,16 +17,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import api.exceptions.EmptyShoppingListException;
-import api.exceptions.InvalidProductAmountInNewTicketException;
-import api.exceptions.InvalidProductAmountInUpdateTicketException;
-import api.exceptions.InvalidProductDiscountException;
-import api.exceptions.MalformedDateException;
-import api.exceptions.NotEnoughStockException;
-import api.exceptions.NotFoundProductCodeException;
-import api.exceptions.NotFoundProductCodeInTicketException;
-import api.exceptions.NotFoundTicketReferenceException;
-import api.exceptions.NotFoundUserMobileException;
+import api.exceptions.ShoppingListEmptyException;
+import api.exceptions.ProductAmountInNewTicketInvalidException;
+import api.exceptions.ProductAmountInUpdateTicketInvalidException;
+import api.exceptions.ProductDiscountInvalidException;
+import api.exceptions.DateMalformedException;
+import api.exceptions.StockNotEnoughException;
+import api.exceptions.ProductCodeNotFoundException;
+import api.exceptions.TicketProductCodeNotFoundException;
+import api.exceptions.TicketReferenceNotFoundException;
+import api.exceptions.UserMobileNotFoundException;
 import api.exceptions.VoucherAlreadyConsumedException;
 import api.exceptions.VoucherHasExpiredException;
 import api.exceptions.VoucherNotFoundException;
@@ -108,18 +108,18 @@ public class TicketResource {
     // @PreAuthorize("hasRole('ADMIN')or hasRole('MANAGER') or hasRole('OPERATOR')")
     @RequestMapping(method = RequestMethod.POST)
     public TicketCreationResponseWrapper createTicket(@RequestBody TicketCreationWrapper ticketCreationWrapper)
-            throws EmptyShoppingListException, NotFoundProductCodeException, NotFoundUserMobileException, NotEnoughStockException,
-            InvalidProductAmountInNewTicketException, InvalidProductDiscountException, IOException, VoucherNotFoundException,
+            throws ShoppingListEmptyException, ProductCodeNotFoundException, UserMobileNotFoundException, StockNotEnoughException,
+            ProductAmountInNewTicketInvalidException, ProductDiscountInvalidException, IOException, VoucherNotFoundException,
             VoucherHasExpiredException, VoucherAlreadyConsumedException {
 
         Long userMobile = ticketCreationWrapper.getUserMobile();
         if (userMobile != null && !userController.userExists(userMobile)) {
-            throw new NotFoundUserMobileException();
+            throw new UserMobileNotFoundException();
         }
 
         List<ShoppingCreationWrapper> shoppingCreationWrapperList = ticketCreationWrapper.getShoppingList();
         if (shoppingCreationWrapperList.isEmpty()) {
-            throw new EmptyShoppingListException();
+            throw new ShoppingListEmptyException();
         }
 
         List<String> voucherReferences = ticketCreationWrapper.getVouchers();
@@ -128,23 +128,23 @@ public class TicketResource {
         for (ShoppingCreationWrapper shoppingCreationWrapper : shoppingCreationWrapperList) {
             String productCode = shoppingCreationWrapper.getProductCode();
             if (!productController.productCodeExists(productCode)) {
-                throw new NotFoundProductCodeException("Product code: " + productCode);
+                throw new ProductCodeNotFoundException("Product code: " + productCode);
             }
             if (shoppingCreationWrapper.getAmount() <= 0) {
                 Product product = productController.getProductByCode(productCode);
-                throw new InvalidProductAmountInNewTicketException(
+                throw new ProductAmountInNewTicketInvalidException(
                         "Product: '" + product.getDescription() + "'. Product code: " + productCode);
             }
             if (shoppingCreationWrapper.getDiscount() < MIN_PRODUCT_DISCOUNT
                     || shoppingCreationWrapper.getDiscount() > MAX_PRODUCT_DISCOUNT) {
                 Product product = productController.getProductByCode(productCode);
-                throw new InvalidProductDiscountException("Product: '" + product.getDescription() + "'. Product code: " + productCode);
+                throw new ProductDiscountInvalidException("Product: '" + product.getDescription() + "'. Product code: " + productCode);
             }
             // If the product is an article, check if there is enough stock and update it
             if (articleController.articleCodeExists(productCode)) {
                 if (!articleController.hasEnoughStock(productCode, shoppingCreationWrapper.getAmount())) {
                     Article article = articleController.getArticleByCode(productCode);
-                    throw new NotEnoughStockException("Article: '" + article.getDescription() + "'. Current stock: " + article.getStock()
+                    throw new StockNotEnoughException("Article: '" + article.getDescription() + "'. Current stock: " + article.getStock()
                             + ". Article code: " + productCode);
                 }
                 articleController.consumeArticle(productCode, shoppingCreationWrapper.getAmount());
@@ -160,10 +160,10 @@ public class TicketResource {
         return ticketController.createTicket(ticketCreationWrapper);
     }
 
-    @RequestMapping(value = Uris.REFERENCE, method = RequestMethod.PATCH)
+    @RequestMapping(value = Uris.USERS_REFERENCE_ID, method = RequestMethod.PATCH)
     public TicketReferenceWrapper updateTicket(@PathVariable String reference, @RequestBody TicketUpdateWrapper ticketUpdateWrapper)
-            throws NotFoundTicketReferenceException, NotFoundProductCodeInTicketException, InvalidProductAmountInUpdateTicketException,
-            NotEnoughStockException, VoucherNotFoundException, VoucherHasExpiredException, VoucherAlreadyConsumedException {
+            throws TicketReferenceNotFoundException, TicketProductCodeNotFoundException, ProductAmountInUpdateTicketInvalidException,
+            StockNotEnoughException, VoucherNotFoundException, VoucherHasExpiredException, VoucherAlreadyConsumedException {
 
         checkTicketReferenceExists(reference);
 
@@ -182,12 +182,12 @@ public class TicketResource {
                 }
             }
             if (shoppingInTicket == null) {
-                throw new NotFoundProductCodeInTicketException("Product code: " + productCode);
+                throw new TicketProductCodeNotFoundException("Product code: " + productCode);
             }
 
             if (shoppingUpdateWrapper.getAmount() < 0) {
                 Product product = productController.getProductByCode(productCode);
-                throw new InvalidProductAmountInUpdateTicketException(
+                throw new ProductAmountInUpdateTicketInvalidException(
                         "Product: '" + product.getDescription() + "'. Product code: " + productCode);
             }
 
@@ -196,7 +196,7 @@ public class TicketResource {
                 int stockDifference = shoppingUpdateWrapper.getAmount() - shoppingInTicket.getAmount();
                 if (!articleController.hasEnoughStock(productCode, stockDifference)) {
                     Article article = articleController.getArticleByCode(productCode);
-                    throw new NotEnoughStockException("Article: '" + article.getDescription() + "'. Current stock: " + article.getStock()
+                    throw new StockNotEnoughException("Article: '" + article.getDescription() + "'. Current stock: " + article.getStock()
                             + ". Article code: " + productCode);
                 }
                 articleController.consumeArticle(productCode, stockDifference);
@@ -213,19 +213,19 @@ public class TicketResource {
         return new TicketReferenceWrapper(ticket.getReference());
     }
 
-    @RequestMapping(value = Uris.REFERENCE, method = RequestMethod.GET)
-    public TicketWrapper getTicket(@PathVariable String reference) throws NotFoundTicketReferenceException {
+    @RequestMapping(value = Uris.USERS_REFERENCE_ID, method = RequestMethod.GET)
+    public TicketWrapper getTicket(@PathVariable String reference) throws TicketReferenceNotFoundException {
         checkTicketReferenceExists(reference);
 
         return new TicketWrapper(ticketController.getTicket(reference));
     }
 
-    @RequestMapping(value = Uris.DAY_TICKETS + Uris.DATE, method = RequestMethod.GET)
-    public List<DayTicketWrapper> getWholeDayTickets(@PathVariable String date) throws MalformedDateException {
+    @RequestMapping(value = Uris.TICKETS_DAY + Uris.TICKETS_DATE_ID, method = RequestMethod.GET)
+    public List<DayTicketWrapper> getWholeDayTickets(@PathVariable String date) throws DateMalformedException {
         String dateFormat = Constants.US_DATE_FORMAT;
         SimpleDateFormat dateFormatter = new SimpleDateFormat(dateFormat);
         if (!date.matches(Constants.US_DATE_REGEX)) {
-            throw new MalformedDateException(dateFormat, "Date sent: " + date);
+            throw new DateMalformedException(dateFormat, "Date sent: " + date);
         }
         Calendar dayToGetTickets = Calendar.getInstance();
         try {
@@ -236,8 +236,8 @@ public class TicketResource {
         return ticketController.wholeDayTickets(dayToGetTickets);
     }
 
-    @RequestMapping(value = Uris.TRACKING + Uris.REFERENCE, method = RequestMethod.GET)
-    public List<ShoppingTrackingWrapper> getTicketTracking(@PathVariable String reference) throws NotFoundTicketReferenceException {
+    @RequestMapping(value = Uris.TICKETS_TRACKING + Uris.USERS_REFERENCE_ID, method = RequestMethod.GET)
+    public List<ShoppingTrackingWrapper> getTicketTracking(@PathVariable String reference) throws TicketReferenceNotFoundException {
         checkTicketReferenceExists(reference);
 
         return ticketController.getTicketTracking(reference);
@@ -260,14 +260,14 @@ public class TicketResource {
         return ticketController.ticketsByUserMobile(mobile, pageable);
     }
 
-    private void checkTicketReferenceExists(String reference) throws NotFoundTicketReferenceException {
+    private void checkTicketReferenceExists(String reference) throws TicketReferenceNotFoundException {
         if (!ticketController.ticketReferenceExists(reference)) {
-            throw new NotFoundTicketReferenceException("Ticket reference: " + reference);
+            throw new TicketReferenceNotFoundException("Ticket reference: " + reference);
         }
     }
 
     
-    @RequestMapping(value = Uris.ALL, method = RequestMethod.GET)
+    @RequestMapping(value = Uris.TICKETS_ALL, method = RequestMethod.GET)
     public List<Ticket> listTickets() {
         return ticketController.findAll();
     }
@@ -289,15 +289,15 @@ public class TicketResource {
         }
     }
     
-    private void throwExceptionIfUserDoesNotExist(Long userMobile) throws NotFoundUserMobileException {
+    private void throwExceptionIfUserDoesNotExist(Long userMobile) throws UserMobileNotFoundException {
         if(!userController.userExists(userMobile)){
-            throw new NotFoundUserMobileException("User mobile: " + userMobile);
+            throw new UserMobileNotFoundException("User mobile: " + userMobile);
         }
     }
 
-    @RequestMapping(value = Uris.REFERENCE + Uris.TICKET_USER, method = RequestMethod.PATCH)
+    @RequestMapping(value = Uris.USERS_REFERENCE_ID + Uris.TICKET_USER, method = RequestMethod.PATCH)
     public TicketWrapper associateUserToTicket(@PathVariable String reference,
-            @RequestBody TicketUserPatchBodyWrapper ticketUserPatchWrapper) throws NotFoundTicketReferenceException, NotFoundUserMobileException {
+            @RequestBody TicketUserPatchBodyWrapper ticketUserPatchWrapper) throws TicketReferenceNotFoundException, UserMobileNotFoundException {
         checkTicketReferenceExists(reference);
         throwExceptionIfUserDoesNotExist(ticketUserPatchWrapper.getUserMobile());
         return ticketController.associateUserToTicket(reference, ticketUserPatchWrapper.getUserMobile());

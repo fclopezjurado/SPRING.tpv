@@ -1,5 +1,6 @@
 package api.exceptions;
 
+//TODO Eliminar code y url
 public class ErrorMessage {
 
     private String error;

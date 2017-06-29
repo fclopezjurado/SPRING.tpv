@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import api.exceptions.NotFoundProductCodeException;
+import api.exceptions.ProductCodeNotFoundException;
 import controllers.ProductController;
 import entities.core.Product;
 import wrappers.PatchChangeDescriptionWrapper;
@@ -34,31 +34,31 @@ public class ProductResource {
     }
 
     // @PreAuthorize("hasRole('ADMIN')or hasRole('MANAGER') or hasRole('OPERATOR')")
-    @RequestMapping(value = Uris.CODE, method = RequestMethod.GET)
-    public ProductWrapper getProductByCode(@PathVariable(value = "code") String code) throws NotFoundProductCodeException {
+    @RequestMapping(value = Uris.PRODUCTS_CODE_ID, method = RequestMethod.GET)
+    public ProductWrapper getProductByCode(@PathVariable(value = "code") String code) throws ProductCodeNotFoundException {
         throwExceptionIfProductDoesNotExists(code);
         return new ProductWrapper(productController.getProductByCode(code));
     }
 
-    @RequestMapping(value = Uris.CODE, method = RequestMethod.PATCH)
+    @RequestMapping(value = Uris.PRODUCTS_CODE_ID, method = RequestMethod.PATCH)
     public void setProductAsDiscontinued(@PathVariable String code,
-            @RequestBody List<PatchChangeDescriptionWrapper> patchChangeDescriptionsWrapper) throws NotFoundProductCodeException {
+            @RequestBody List<PatchChangeDescriptionWrapper> patchChangeDescriptionsWrapper) throws ProductCodeNotFoundException {
         throwExceptionIfProductDoesNotExists(code);
         for (PatchChangeDescriptionWrapper patchRequestBodyWrapper : patchChangeDescriptionsWrapper) {
             String operation = patchRequestBodyWrapper.getOp();
             String path = patchRequestBodyWrapper.getPath();
             String value = patchRequestBodyWrapper.getValue();
             if (operation.equals(PatchOperations.REPLACE)) {
-                if (path.equals(Uris.DISCONTINUED)) {
+                if (path.equals(Uris.PRODUCTS_DISCONTINUED)) {
                     productController.setProductAsDiscontinued(code, Boolean.parseBoolean(value));
                 }
             }
         }
     }
 
-    @RequestMapping(value = Uris.BARCODES, method = RequestMethod.POST)
+    @RequestMapping(value = Uris.PRODUCTS_BARCODES, method = RequestMethod.POST)
     public ResponseEntity<byte[]> generateBarcodesPdf(@RequestBody List<ProductBarcodeWrapper> productBarcodeWrappers)
-            throws NotFoundProductCodeException, IOException {
+            throws ProductCodeNotFoundException, IOException {
         productBarcodeWrappers = productBarcodeWrappers.stream()
                 .filter(barcodeWrapper -> barcodeWrapper.getBarcode() != null && !barcodeWrapper.getBarcode().isEmpty())
                 .collect(Collectors.toList());
@@ -74,10 +74,10 @@ public class ProductResource {
         return barcodesPdf;
     }
 
-    private void throwExceptionIfProductDoesNotExists(String code) throws NotFoundProductCodeException {
+    private void throwExceptionIfProductDoesNotExists(String code) throws ProductCodeNotFoundException {
         Product product = productController.getProductByCode(code);
         if (product == null) {
-            throw new NotFoundProductCodeException("Product code: " + code);
+            throw new ProductCodeNotFoundException("Product code: " + code);
         }
     }
 }

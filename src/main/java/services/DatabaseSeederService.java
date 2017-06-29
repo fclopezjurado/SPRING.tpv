@@ -1,8 +1,9 @@
 package services;
 
+import static config.ResourceNames.YAML_FILES_ROOT;
 import static config.ResourceNames.ADMIN_YAML_FILE_NAME;
 import static config.ResourceNames.TEST_SEED_YAML_FILE_NAME;
-import static config.ResourceNames.YAML_FILES_ROOT;
+import static config.ResourceNames.YAML_FILE_EXT;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -89,7 +90,7 @@ public class DatabaseSeederService {
     @PostConstruct
     public void createDefaultAdmin() {
         Yaml adminYaml = new Yaml();
-        Resource resource = appContext.getResource(YAML_FILES_ROOT + ADMIN_YAML_FILE_NAME);
+        Resource resource = appContext.getResource(YAML_FILES_ROOT + ADMIN_YAML_FILE_NAME + YAML_FILE_EXT);
         InputStream input;
         try {
             input = resource.getInputStream();
@@ -115,7 +116,7 @@ public class DatabaseSeederService {
         if (!ymlFileName.equals(ADMIN_YAML_FILE_NAME)) {
             Constructor constructor = new Constructor(TpvGraph.class);
             Yaml yamlParser = new Yaml(constructor);
-            Resource resource = appContext.getResource(YAML_FILES_ROOT + ymlFileName);
+            Resource resource = appContext.getResource(YAML_FILES_ROOT + ymlFileName + YAML_FILE_EXT);
             InputStream input;
             try {
                 input = resource.getInputStream();
@@ -134,13 +135,14 @@ public class DatabaseSeederService {
                 invoiceDao.save(tpvGraph.getInvoiceList());
                 cashierClosureDao.save(tpvGraph.getCashierClosureList());
             } catch (IOException e) {
-                LogManager.getLogger(this.getClass().getSimpleName()).error("File " + ymlFileName + " doesn't exist or can't be opened");
+                LogManager.getLogger(this.getClass().getSimpleName())
+                        .error("File " + ymlFileName + YAML_FILE_EXT + " doesn't exist or can't be opened");
             }
         }
     }
 
     public boolean existsYamlFile(String fileName) {
-        Resource resource = appContext.getResource(YAML_FILES_ROOT + fileName);
+        Resource resource = appContext.getResource(YAML_FILES_ROOT + fileName + YAML_FILE_EXT);
         return resource.exists();
     }
 

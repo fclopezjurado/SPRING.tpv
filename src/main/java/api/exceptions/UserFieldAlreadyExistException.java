@@ -1,6 +1,6 @@
 package api.exceptions;
 
-public class AlreadyExistUserFieldException extends ApiException {
+public class UserFieldAlreadyExistException extends ApiException {
 
     private static final long serialVersionUID = -1344640670884805385L;
 
@@ -8,11 +8,11 @@ public class AlreadyExistUserFieldException extends ApiException {
 
     public static final int CODE = 1;
 
-    public AlreadyExistUserFieldException() {
+    public UserFieldAlreadyExistException() {
         this("");
     }
 
-    public AlreadyExistUserFieldException(String detail) {
+    public UserFieldAlreadyExistException(String detail) {
         super(DESCRIPTION + ". " + detail, CODE);
     }
 

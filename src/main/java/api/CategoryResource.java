@@ -57,7 +57,7 @@ public class CategoryResource {
         return categoryController.findAllCategories();
     }
 
-    @RequestMapping(value = Uris.CATEGORY_NAME, method = RequestMethod.GET)
+    @RequestMapping(value = Uris.CATEGORIES_NAME_ID, method = RequestMethod.GET)
     public CategoryComponent findCategoryByName(@PathVariable String name) throws CategoryComponentNotFoundException {
         throwExceptionIfCategoryComponentDoesNotExist(name);
         return categoryController.findCategoryComponentByName(name);

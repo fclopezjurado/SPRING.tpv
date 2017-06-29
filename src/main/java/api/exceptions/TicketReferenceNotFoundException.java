@@ -1,17 +1,17 @@
 package api.exceptions;
 
-public class NotFoundTicketReferenceException extends ApiException {
+public class TicketReferenceNotFoundException extends ApiException {
     private static final long serialVersionUID = 3117076866914877491L;
 
     public static final String DESCRIPTION = "Ticket reference provided not found";
 
     public static final int CODE = 10;
 
-    public NotFoundTicketReferenceException() {
+    public TicketReferenceNotFoundException() {
         this("");
     }
 
-    public NotFoundTicketReferenceException(String detail) {
+    public TicketReferenceNotFoundException(String detail) {
         super(DESCRIPTION + ". " + detail, CODE);
     }
 

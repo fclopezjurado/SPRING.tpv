@@ -1,6 +1,6 @@
 package api.exceptions;
 
-public class InvalidUserFieldException extends ApiException {
+public class UserFieldInvalidException extends ApiException {
 
     private static final long serialVersionUID = -1344640670884805385L;
 
@@ -8,11 +8,11 @@ public class InvalidUserFieldException extends ApiException {
 
     public static final int CODE = 2;
 
-    public InvalidUserFieldException() {
+    public UserFieldInvalidException() {
         this("");
     }
 
-    public InvalidUserFieldException(String detail) {
+    public UserFieldInvalidException(String detail) {
         super(DESCRIPTION + ". " + detail, CODE);
     }
 
