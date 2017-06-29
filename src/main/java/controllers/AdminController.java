@@ -18,21 +18,21 @@ public class AdminController {
     public void deleteAllExceptAdmin() {
         databaseSeederService.deleteAllExceptAdmin();
     }
-    
-    public void seedDatabase(){
+
+    public void seedDatabase() {
         databaseSeederService.seedDatabase();
     }
-    
+
     public void seedDatabase(String ymlFileName) {
         databaseSeederService.seedDatabase(ymlFileName);
     }
-    
+
     public boolean existsYamlFile(String ymlFileName) {
         return databaseSeederService.existsYamlFile(ymlFileName);
     }
-    
 
-    
-    
+    public void seedDatabaseVarious() {
+        databaseSeederService.seedDatabaseVarious();
+    }
 
 }

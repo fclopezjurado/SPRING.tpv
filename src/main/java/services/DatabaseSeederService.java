@@ -7,6 +7,7 @@ import static config.ResourceNames.YAML_FILE_EXT;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
 
 import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
@@ -33,7 +34,9 @@ import daos.core.VoucherDao;
 import daos.users.AuthorizationDao;
 import daos.users.TokenDao;
 import daos.users.UserDao;
+import entities.core.Article;
 import entities.core.CategoryComponent;
+import entities.core.Provider;
 import entities.users.Authorization;
 import entities.users.Role;
 import entities.users.User;
@@ -172,4 +175,14 @@ public class DatabaseSeederService {
         createDefaultAdmin();
     }
 
+    public void seedDatabaseVarious() {
+        Provider provider = new Provider("Anonimo", "", 0, 0, "", "");
+        providerDao.save(provider);
+        for (int i = 1; i < 10000; i++) {
+            Article article = new Article(String.valueOf(i), "Varios (" + i / 100 + "," + i % 100 + ")", new BigDecimal(i).movePointLeft(2),
+                    "Varios, sin cod. barras", new BigDecimal(i).movePointLeft(2), provider);
+            article.setStock(100000);
+            articleDao.save(article);
+        }
+    }
 }

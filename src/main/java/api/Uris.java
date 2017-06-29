@@ -12,6 +12,8 @@ public class Uris {
 
     public static final String ADMINS_DATABASE = "/database";
 
+    public static final String ADMINS_DATABASE_VARIOUS = "/various-articles";
+
     public static final String USERS = "/users";
 
     public static final String USERS_PHONE = "/{mobilePhone}";
@@ -81,5 +83,6 @@ public class Uris {
     public static final String TICKETS_ALL = "/all";
 
     public static final String TICKET_USER = "/user";
+
 
 }

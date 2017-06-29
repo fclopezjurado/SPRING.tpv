@@ -20,7 +20,7 @@ public class AdminResource {
         this.adminController = adminController;
     }
 
-    //TODO revisar
+    // TODO revisar
     @RequestMapping(method = RequestMethod.GET)
     public String version(String param) {
         return "{\"version\":\"" + Uris.VERSION + "\"}";
@@ -37,6 +37,11 @@ public class AdminResource {
                 adminController.seedDatabase(ymlFileName);
             }
         }
+    }
+
+    @RequestMapping(value = Uris.ADMINS_DATABASE + Uris.ADMINS_DATABASE_VARIOUS, method = RequestMethod.POST)
+    public void seedDatabaseVarious() {
+        adminController.seedDatabaseVarious();
     }
 
     @RequestMapping(value = Uris.ADMINS_DATABASE, method = RequestMethod.DELETE)
