@@ -1,6 +1,6 @@
 package api.exceptions;
 
-public class NotEnoughStockException extends ApiException {
+public class StockNotEnoughException extends ApiException {
 
     private static final long serialVersionUID = -3273789534340515643L;
 
@@ -8,11 +8,11 @@ public class NotEnoughStockException extends ApiException {
 
     public static final int CODE = 11;
 
-    public NotEnoughStockException() {
+    public StockNotEnoughException() {
         this("");
     }
 
-    public NotEnoughStockException(String detail) {
+    public StockNotEnoughException(String detail) {
         super(DESCRIPTION + ". " + detail, CODE);
     }
 

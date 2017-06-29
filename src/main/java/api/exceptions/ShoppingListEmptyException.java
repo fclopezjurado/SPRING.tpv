@@ -1,17 +1,17 @@
 package api.exceptions;
 
-public class EmptyShoppingListException extends ApiException {
+public class ShoppingListEmptyException extends ApiException {
     private static final long serialVersionUID = 7862705985622778351L;
 
     public static final String DESCRIPTION = "Product list in ticket is empty";
 
     public static final int CODE = 8;
 
-    public EmptyShoppingListException() {
+    public ShoppingListEmptyException() {
         this("");
     }
 
-    public EmptyShoppingListException(String detail) {
+    public ShoppingListEmptyException(String detail) {
         super(DESCRIPTION + ". " + detail, CODE);
     }
 

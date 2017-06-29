@@ -1,6 +1,6 @@
 package api.exceptions;
 
-public class NotFoundProductCodeException extends ApiException {
+public class ProductCodeNotFoundException extends ApiException {
 
     private static final long serialVersionUID = -5670907548890543981L;
 
@@ -8,11 +8,11 @@ public class NotFoundProductCodeException extends ApiException {
 
     public static final int CODE = 7;
 
-    public NotFoundProductCodeException() {
+    public ProductCodeNotFoundException() {
         this("");
     }
 
-    public NotFoundProductCodeException(String detail) {
+    public ProductCodeNotFoundException(String detail) {
         super(DESCRIPTION + ". " + detail, CODE);
     }
 

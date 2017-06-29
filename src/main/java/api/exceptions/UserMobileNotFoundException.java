@@ -1,6 +1,6 @@
 package api.exceptions;
 
-public class NotFoundUserMobileException extends ApiException {
+public class UserMobileNotFoundException extends ApiException {
 
     private static final long serialVersionUID = -1344640670884805385L;
 
@@ -8,11 +8,11 @@ public class NotFoundUserMobileException extends ApiException {
 
     public static final int CODE = 9;
 
-    public NotFoundUserMobileException() {
+    public UserMobileNotFoundException() {
         this("");
     }
 
-    public NotFoundUserMobileException(String detail) {
+    public UserMobileNotFoundException(String detail) {
         super(DESCRIPTION + ". " + detail, CODE);
     }
 

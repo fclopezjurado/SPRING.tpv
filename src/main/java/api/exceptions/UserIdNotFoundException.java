@@ -1,6 +1,6 @@
 package api.exceptions;
 
-public class NotFoundUserIdException extends ApiException {
+public class UserIdNotFoundException extends ApiException {
 
     private static final long serialVersionUID = -1344640670884805385L;
 
@@ -8,11 +8,11 @@ public class NotFoundUserIdException extends ApiException {
 
     public static final int CODE = 4;
 
-    public NotFoundUserIdException() {
+    public UserIdNotFoundException() {
         this("");
     }
 
-    public NotFoundUserIdException(String detail) {
+    public UserIdNotFoundException(String detail) {
         super(DESCRIPTION + ". " + detail, CODE);
     }
 

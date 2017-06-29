@@ -56,7 +56,7 @@ public class VoucherResourceFunctionalTesting {
     @Test
     public void testConsumeVoucherWithNonExistentVoucher() {
         thrown.expect(new HttpMatcher(HttpStatus.NOT_FOUND));
-        new RestBuilder<Object>(restService.getUrl()).path(Uris.VOUCHERS).pathId(0).path(Uris.VOUCHER_CONSUMPTION)
+        new RestBuilder<Object>(restService.getUrl()).path(Uris.VOUCHERS).pathId(0).path(Uris.VOUCHERS_CONSUMPTION)
                 .basicAuth(restService.loginAdmin(), "").clazz(Object.class).put().build();
     }
 
@@ -65,28 +65,28 @@ public class VoucherResourceFunctionalTesting {
         thrown.expect(new HttpMatcher(HttpStatus.CONFLICT));
         String alreadyConsumedVoucherReference = this.vouchersToBeTested().get(3).getReference();
         new RestBuilder<Object>(restService.getUrl()).path(Uris.VOUCHERS).pathId(alreadyConsumedVoucherReference)
-                .path(Uris.VOUCHER_CONSUMPTION).basicAuth(restService.loginAdmin(), "").clazz(Object.class).put().build();
+                .path(Uris.VOUCHERS_CONSUMPTION).basicAuth(restService.loginAdmin(), "").clazz(Object.class).put().build();
     }
 
     @Test
     public void testConsumeVoucherWithExpiredVoucher() {
         thrown.expect(new HttpMatcher(HttpStatus.CONFLICT));
         String expiredVoucherReference = this.vouchersToBeTested().get(4).getReference();
-        new RestBuilder<Object>(restService.getUrl()).path(Uris.VOUCHERS).pathId(expiredVoucherReference).path(Uris.VOUCHER_CONSUMPTION)
+        new RestBuilder<Object>(restService.getUrl()).path(Uris.VOUCHERS).pathId(expiredVoucherReference).path(Uris.VOUCHERS_CONSUMPTION)
                 .basicAuth(restService.loginAdmin(), "").clazz(Object.class).put().build();
     }
 
     @Test
     public void testConsumeVoucher() {
         String reference = this.vouchersToBeTested().get(1).getReference();
-        new RestBuilder<Object>(restService.getUrl()).path(Uris.VOUCHERS).pathId(reference).path(Uris.VOUCHER_CONSUMPTION)
+        new RestBuilder<Object>(restService.getUrl()).path(Uris.VOUCHERS).pathId(reference).path(Uris.VOUCHERS_CONSUMPTION)
                 .basicAuth(restService.loginAdmin(), "").clazz(Object.class).put().build();
     }
 
     @Test
     public void testGetActiveVouchersTotalValue() {
         ActiveVouchersTotalValueWrapper totalValue = new RestBuilder<ActiveVouchersTotalValueWrapper>(restService.getUrl())
-                .path(Uris.VOUCHERS + Uris.VOUCHER_ACTIVESTOTALVALUE).basicAuth(restService.loginAdmin(), "")
+                .path(Uris.VOUCHERS + Uris.VOUCHERS_ACTIVESTOTALVALUE).basicAuth(restService.loginAdmin(), "")
                 .clazz(ActiveVouchersTotalValueWrapper.class).get().build();
         assertTrue(totalValue.getTotalValue().doubleValue() > 0.0);
 

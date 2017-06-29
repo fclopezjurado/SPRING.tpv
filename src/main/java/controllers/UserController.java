@@ -9,8 +9,8 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 
-import api.exceptions.NotFoundTicketReferenceException;
-import api.exceptions.NotFoundUserMobileException;
+import api.exceptions.TicketReferenceNotFoundException;
+import api.exceptions.UserMobileNotFoundException;
 import daos.users.AuthorizationDao;
 import daos.users.UserDao;
 import entities.users.Authorization;
@@ -64,7 +64,6 @@ public class UserController {
     }
 
     private boolean userExists(User user) {
-
         return user != null;
     }
 
@@ -107,7 +106,7 @@ public class UserController {
         if (!userExists(user)) {
             valid = false;
         } else {
-            if (user.getAddress() == null || user.getDni() == null || user.getEmail() == null) {
+            if (user.getAddress() == null || user.getDni() == null ) {
                 valid = false;
             }
         }
@@ -148,11 +147,11 @@ public class UserController {
         userDao.save(user);
     }
 
-    public void deleteUser(long mobile) throws NotFoundUserMobileException {
+    public void deleteUser(long mobile) throws UserMobileNotFoundException {
         User user = this.userDao.findByMobile(mobile);
 
         if (user == null)
-            throw new NotFoundUserMobileException();
+            throw new UserMobileNotFoundException();
 
         for (Authorization auth : this.authorizationDao.findAll())
             if (auth.getId() == user.getId())
@@ -161,11 +160,11 @@ public class UserController {
         this.userDao.delete(user);
     }
     
-    public UserWrapper getByTicketReference(String ticketReference) throws NotFoundTicketReferenceException {
+    public UserWrapper getByTicketReference(String ticketReference) throws TicketReferenceNotFoundException {
         User user = this.userDao.findByTicketReference(ticketReference);
 
         if (user == null)
-            throw new NotFoundTicketReferenceException();
+            throw new TicketReferenceNotFoundException();
 
         return new UserWrapper(user);
     }

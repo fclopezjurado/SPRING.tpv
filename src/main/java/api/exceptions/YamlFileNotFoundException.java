@@ -1,6 +1,6 @@
 package api.exceptions;
 
-public class NotFoundYamlFileException extends ApiException {
+public class YamlFileNotFoundException extends ApiException {
 
     private static final long serialVersionUID = 3886231640831810298L;
 
@@ -8,11 +8,11 @@ public class NotFoundYamlFileException extends ApiException {
 
     public static final int CODE = 6;
 
-    public NotFoundYamlFileException() {
+    public YamlFileNotFoundException() {
         this("");
     }
 
-    public NotFoundYamlFileException(String detail) {
+    public YamlFileNotFoundException(String detail) {
         super(DESCRIPTION + ". " + detail, CODE);
     }
 

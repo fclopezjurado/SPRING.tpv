@@ -87,7 +87,7 @@ public class DatabaseSeederServiceIT {
 
     @Test
     public void testTpvTestDatabaseShouldBeParsed() {
-        String tpvDatabaseYaml = "TPV_Test_Database.yml";
+        String tpvDatabaseYaml = "TPV_Test_Database";
         long previousUserCount = userDao.count();
         long previousAuthorizationCount = authorizationDao.count();
         long previousTokenCount = tokenDao.count();
@@ -135,7 +135,7 @@ public class DatabaseSeederServiceIT {
     public void testNotAllEntitiesYaml() {
         // YAML which only contains 2 users, 1 token, 1 embroidery
         // 2 textilePrintings and 1 ticket
-        String notAllEntitiesYaml = "TPV_Test_Not_All_Entities.yml";
+        String notAllEntitiesYaml = "TPV_Test_Not_All_Entities";
         long previousUserCount = userDao.count();
         long previousAuthorizationCount = authorizationDao.count();
         long previousTokenCount = tokenDao.count();

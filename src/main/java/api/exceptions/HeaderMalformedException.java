@@ -1,6 +1,6 @@
 package api.exceptions;
 
-public class MalformedHeaderException extends ApiException {
+public class HeaderMalformedException extends ApiException {
 
     private static final long serialVersionUID = -1344640670884805385L;
 
@@ -8,11 +8,11 @@ public class MalformedHeaderException extends ApiException {
 
     public static final int CODE = 3;
 
-    public MalformedHeaderException() {
+    public HeaderMalformedException() {
         this("");
     }
 
-    public MalformedHeaderException(String detail) {
+    public HeaderMalformedException(String detail) {
         super(DESCRIPTION + ". " + detail, CODE);
     }
 

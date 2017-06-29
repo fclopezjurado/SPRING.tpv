@@ -394,7 +394,7 @@ public class TicketResourceFunctionalTesting {
         this.openCashier();
         thrown.expect(new HttpMatcher(HttpStatus.NOT_FOUND));
         String ticketReference = "justTesting-123";
-        new RestBuilder<ShoppingTrackingWrapper[]>(restService.getUrl()).path(Uris.TICKETS).path(Uris.TRACKING).pathId(ticketReference)
+        new RestBuilder<ShoppingTrackingWrapper[]>(restService.getUrl()).path(Uris.TICKETS).path(Uris.TICKETS_TRACKING).pathId(ticketReference)
                 .basicAuth(restService.loginAdmin(), "").clazz(ShoppingTrackingWrapper[].class).get().build();
     }
 
@@ -434,7 +434,7 @@ public class TicketResourceFunctionalTesting {
         this.openCashier();
         thrown.expect(new HttpMatcher(HttpStatus.BAD_REQUEST));
         String date = "09-05-2017";
-        new RestBuilder<DayTicketWrapper[]>(restService.getUrl()).path(Uris.TICKETS).path(Uris.DAY_TICKETS).pathId(date).basicAuth(restService.loginAdmin(), "")
+        new RestBuilder<DayTicketWrapper[]>(restService.getUrl()).path(Uris.TICKETS).path(Uris.TICKETS_DAY).pathId(date).basicAuth(restService.loginAdmin(), "")
                 .clazz(DayTicketWrapper[].class).get().build();
     }
 
@@ -448,7 +448,7 @@ public class TicketResourceFunctionalTesting {
         Calendar today = Calendar.getInstance();
         String date = dateFormatter.format(today.getTime());
         List<DayTicketWrapper> wholeDayTickets = Arrays.asList(new RestBuilder<DayTicketWrapper[]>(restService.getUrl()).path(Uris.TICKETS)
-                .path(Uris.DAY_TICKETS).pathId(date).basicAuth(restService.loginAdmin(), "").clazz(DayTicketWrapper[].class).get().build());
+                .path(Uris.TICKETS_DAY).pathId(date).basicAuth(restService.loginAdmin(), "").clazz(DayTicketWrapper[].class).get().build());
 
         double total = 0;
         for (DayTicketWrapper dayTicketWrapper : wholeDayTickets) {
@@ -478,7 +478,7 @@ public class TicketResourceFunctionalTesting {
                 .body(ticketCreationWrapper).basicAuth(restService.loginAdmin(), "").clazz(TicketReferenceWrapper.class).post().build();
 
         List<ShoppingTrackingWrapper> shoppingTrackingWrapperList = Arrays
-                .asList(new RestBuilder<ShoppingTrackingWrapper[]>(restService.getUrl()).path(Uris.TICKETS).path(Uris.TRACKING)
+                .asList(new RestBuilder<ShoppingTrackingWrapper[]>(restService.getUrl()).path(Uris.TICKETS).path(Uris.TICKETS_TRACKING)
                         .pathId(ticketReference.getTicketReference()).basicAuth(restService.loginAdmin(), "")
                         .clazz(ShoppingTrackingWrapper[].class).get().build());
 

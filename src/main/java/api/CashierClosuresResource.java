@@ -2,7 +2,7 @@ package api;
 
 import api.exceptions.LastCashierClosureIsClosedException;
 import api.exceptions.LastCashierClosureIsOpenYetException;
-import api.exceptions.NotExistsCashierClosuresException;
+import api.exceptions.CashierClosuresNotFoundException;
 import controllers.CashierClosuresController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,16 +31,14 @@ public class CashierClosuresResource {
         if (!cashierClosuresController.isLastCashierClosuresClosed()) {
             throw new LastCashierClosureIsOpenYetException();
         }
-
         return new CashierClosuresCreationWrapper(cashierClosuresController.createCashierClosures());
     }
 
     @RequestMapping(method = RequestMethod.GET, path = Uris.CASHIER_CLOSURES_LAST)
-    public CashierClosuresWrapper getLastCashierClosure() throws NotExistsCashierClosuresException {
+    public CashierClosuresWrapper getLastCashierClosure() throws CashierClosuresNotFoundException {
         if (cashierClosuresController.getLastCashierClosure() == null) {
-            throw new NotExistsCashierClosuresException();
+            throw new CashierClosuresNotFoundException();
         }
-
         return new CashierClosuresWrapper(cashierClosuresController.getLastCashierClosure());
     }
 
@@ -50,7 +48,6 @@ public class CashierClosuresResource {
         if (cashierClosuresController.isLastCashierClosuresClosed()) {
             throw new LastCashierClosureIsClosedException();
         }
-
         return new CashierClosuresWrapper(
                 cashierClosuresController.closeCashierRequest(cashierClosingWrapper.getAmount(), cashierClosingWrapper.getComment()));
     }
@@ -70,7 +67,6 @@ public class CashierClosuresResource {
         if (cashierClosuresController.isLastCashierClosuresClosed()) {
             throw new LastCashierClosureIsClosedException();
         }
-
         return new CashierClosuresWrapper(cashierClosuresController.withDrawCashierRequest(amountWrapper.getAmount()));
 
     }

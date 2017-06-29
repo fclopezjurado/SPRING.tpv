@@ -1,6 +1,6 @@
 package api.exceptions;
 
-public class TicketIsAlreadyAssignedToInvoiceException extends ApiException {
+public class TicketInvoiceAlreadyExitsException extends ApiException {
 
     private static final long serialVersionUID = 7651290393491101610L;
 
@@ -8,11 +8,11 @@ public class TicketIsAlreadyAssignedToInvoiceException extends ApiException {
 
     public static final int CODE = 20;
     
-    public TicketIsAlreadyAssignedToInvoiceException() {
+    public TicketInvoiceAlreadyExitsException() {
         this("");
     }
     
-    public TicketIsAlreadyAssignedToInvoiceException(String detail) {
+    public TicketInvoiceAlreadyExitsException(String detail) {
         super(DESCRIPTION + ". " + detail, CODE);
     }
 }

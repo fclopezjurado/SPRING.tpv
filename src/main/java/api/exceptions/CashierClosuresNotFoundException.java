@@ -1,6 +1,6 @@
 package api.exceptions;
 
-public class NotExistsCashierClosuresException extends ApiException {
+public class CashierClosuresNotFoundException extends ApiException {
 
 	private static final long serialVersionUID = 5417661361405771382L;
 
@@ -8,11 +8,11 @@ public class NotExistsCashierClosuresException extends ApiException {
 
     public static final int CODE = 27;
 
-    public NotExistsCashierClosuresException() {
+    public CashierClosuresNotFoundException() {
         this("");
     }
 
-    public NotExistsCashierClosuresException(String detail) {
+    public CashierClosuresNotFoundException(String detail) {
         super(DESCRIPTION + ". " + detail, CODE);
     }
 }
