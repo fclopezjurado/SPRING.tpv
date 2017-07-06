@@ -1,6 +1,7 @@
 package services;
 
 public class Barcode {
+    
     public int ean13ControlCodeCalculator(String code) {
         char[] charDigits = code.toCharArray();
         int[] ean13 = {1, 3};
@@ -11,6 +12,8 @@ public class Barcode {
         return (10 - sum % 10) % 10;
     }
 
+    
+    
     public static void main(String[] args) {
         for (int i = 2; i < 18; i += 2) {
             String base = "8400002";

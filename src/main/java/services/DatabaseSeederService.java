@@ -139,7 +139,6 @@ public class DatabaseSeederService {
                 textilePrintingDao.save(tpvGraph.getTextilePrintingList());
                 productCategoryDao.save(tpvGraph.getProductCategoryList());
                 categoryCompositeDao.save(tpvGraph.getCategoryCompositeList());
-
                 ticketDao.save(tpvGraph.getTicketList());
                 invoiceDao.save(tpvGraph.getInvoiceList());
                 cashierClosureDao.save(tpvGraph.getCashierClosureList());
