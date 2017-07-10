@@ -11,7 +11,7 @@ import entities.core.Invoice;
 import entities.core.Shopping;
 import entities.core.ShoppingState;
 import entities.core.Ticket;
-import services.Company;
+import services.CompanyGraph;
 import services.DatabaseSeederService;
 
 @Component
@@ -23,7 +23,7 @@ public class PdfGenerator {
 
     private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm";
 
-    private Company company;
+    private CompanyGraph company;
 
     @Autowired
     public void setDatabaseSeederService(DatabaseSeederService databaseSeederService) {

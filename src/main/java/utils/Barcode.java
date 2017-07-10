@@ -1,4 +1,4 @@
-package services;
+package utils;
 
 public class Barcode {
     public int ean13ControlCodeCalculator(String code) {
