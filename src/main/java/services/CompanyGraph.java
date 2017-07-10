@@ -1,6 +1,7 @@
 package services;
 
-public class Company {
+public class CompanyGraph {
+    
     private String mobile;
 
     private String username;
@@ -19,7 +20,7 @@ public class Company {
 
     private String postalAddress;
 
-    public Company() {
+    public CompanyGraph() {
     }
 
     public String getMobile() {

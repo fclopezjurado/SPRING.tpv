@@ -44,6 +44,7 @@ import entities.core.Provider;
 import entities.users.Authorization;
 import entities.users.Role;
 import entities.users.User;
+import utils.Barcode;
 
 @Service
 @Transactional
@@ -94,7 +95,7 @@ public class DatabaseSeederService {
     @Autowired
     private CashierClosureDao cashierClosureDao;
 
-    private Company company;
+    private CompanyGraph company;
 
     @PostConstruct
     public void createDefaultAdmin() {
@@ -103,7 +104,7 @@ public class DatabaseSeederService {
         InputStream input;
         try {
             input = resource.getInputStream();
-            company = adminYaml.loadAs(input, Company.class);
+            company = adminYaml.loadAs(input, CompanyGraph.class);
             User adminSaved = userDao.findByMobile(Long.parseLong(company.getMobile()));
             if (adminSaved == null) {
                 User admin = new User(Long.parseLong(company.getMobile()), company.getUsername(), company.getPassword());
@@ -116,7 +117,7 @@ public class DatabaseSeederService {
         }
     }
 
-    public Company getCompany() {
+    public CompanyGraph getCompany() {
         return company;
     }
 
