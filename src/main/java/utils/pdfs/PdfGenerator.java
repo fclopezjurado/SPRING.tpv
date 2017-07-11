@@ -85,7 +85,7 @@ public class PdfGenerator {
 
         BigDecimal baseImponible = invoice.getTicket().getTicketTotal().divide(new BigDecimal(1.21), 2, RoundingMode.HALF_UP);
         pdf.tableColspanRight("Base Imponible: " + baseImponible + "€");
-        pdf.tableColspanRight("21% IVA: " + baseImponible.multiply(new BigDecimal(21).movePointLeft(2)) + "€");
+        pdf.tableColspanRight("21% IVA: " + baseImponible.multiply(new BigDecimal(21).movePointLeft(2)).setScale(2, RoundingMode.HALF_UP) + "€");
         pdf.tableColspanRight("TOTAL: " + invoice.getTicket().getTicketTotal().setScale(2, RoundingMode.HALF_UP) + "€").separator();
         pdf.barCode(String.valueOf(invoice.getId()));
         
