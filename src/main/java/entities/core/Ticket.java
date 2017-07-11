@@ -14,7 +14,6 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
@@ -22,8 +21,6 @@ import javax.persistence.TemporalType;
 
 import entities.users.Encrypting;
 import entities.users.User;
-import net.glxn.qrgen.QRCode;
-import net.glxn.qrgen.image.ImageType;
 
 @Entity
 @IdClass(TicketPK.class)
@@ -41,10 +38,6 @@ public class Ticket {
     @Column(unique = true, nullable = false)
     private String reference;
 
-    @Lob
-    @Column
-    private byte[] qrReference;
-
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Shopping> shoppingList;
 
@@ -57,7 +50,6 @@ public class Ticket {
         created.set(Calendar.MILLISECOND, 0);
         date = Integer.parseInt((new SimpleDateFormat("yyyyMMdd").format(Calendar.getInstance().getTime())));
         reference = new Encrypting().encryptInBase64UrlSafe("" + this.getId() + Long.toString(new Date().getTime()));
-        qrReference = QRCode.from(reference).to(ImageType.JPG).stream().toByteArray();
         shoppingList = new ArrayList<>();
     }
 
@@ -114,10 +106,6 @@ public class Ticket {
         this.reference = reference;
     }
 
-    public byte[] getQrReference() {
-        return qrReference;
-    }
-
     public BigDecimal getTicketTotal() {
         double total = 0.0;
         for (Shopping shopping : shoppingList) {
@@ -151,7 +139,7 @@ public class Ticket {
 
     @Override
     public String toString() {
-        String createTime = new SimpleDateFormat("HH:mm dd-MMM-yyyy ").format(created.getTime());
+        String createTime = new SimpleDateFormat("dd-MMM-yyyy HH:mm").format(created.getTime());
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("Ticket[" + id + ": created=" + createTime + ", shoppingList=" + shoppingList);
         if (user != null) {

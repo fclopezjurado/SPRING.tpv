@@ -8,7 +8,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
 
@@ -30,7 +29,6 @@ import entities.core.Shopping;
 import entities.core.ShoppingState;
 import entities.core.Ticket;
 import entities.core.TicketPK;
-import wrappers.DayTicketWrapper;
 import wrappers.ShoppingCreationWrapper;
 import wrappers.ShoppingTrackingWrapper;
 import wrappers.ShoppingUpdateWrapper;
@@ -230,20 +228,6 @@ public class TicketControllerIT {
     public void testTicketIsNotAssignedToInvoice() {
         Ticket ticketNotAssignedToAnInvoice = ticketDao.findOne(new TicketPK(1));
         assertFalse(ticketController.ticketIsAlreadyAssignedToInvoice(ticketNotAssignedToAnInvoice));
-    }
-
-    @Test
-    public void testGetWholeDayTickets() {
-        int totalNumTickets = 6;
-        double totalTicketsPrice = 1294.09;
-        Calendar today = Calendar.getInstance();
-        List<DayTicketWrapper> dayTicketsList = ticketController.wholeDayTickets(today);
-        double total = 0;
-        for (DayTicketWrapper dayTicketWrapper : dayTicketsList) {
-            total += dayTicketWrapper.getTotal();
-        }
-        assertEquals(totalNumTickets, dayTicketsList.size());
-        assertEquals(totalTicketsPrice, total, 0.01);
     }
 
     @Test

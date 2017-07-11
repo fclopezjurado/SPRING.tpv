@@ -2,14 +2,11 @@ package wrappers;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Base64;
-import java.util.Base64.Encoder;
 import java.util.Calendar;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import api.Constants;
 import entities.core.Shopping;
 import entities.core.Ticket;
 
@@ -17,7 +14,7 @@ public class TicketWrapper {
     
     private long id;
 
-    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern=Constants.US_DATE_FORMAT)
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd-MMM-yyyy HH:mm")
     private Calendar created;
 
     private String reference;
@@ -25,8 +22,6 @@ public class TicketWrapper {
     private List<ShoppingWrapper> shoppingList;
 
     private Long userMobile;
-
-	private String qrReference;
 
     public TicketWrapper() {
         this.shoppingList = new ArrayList<>();
@@ -37,8 +32,6 @@ public class TicketWrapper {
         this.created = ticket.getCreated();
         this.reference = ticket.getReference();
         this.shoppingList = new ArrayList<>();
-        Encoder b64 = Base64.getEncoder();
-        this.qrReference = b64.encodeToString(ticket.getQrReference());
         
         if (ticket.getShoppingList() != null) {
             for (Shopping shopping : ticket.getShoppingList()) {
@@ -70,13 +63,10 @@ public class TicketWrapper {
         return userMobile;
     }
 
-    public String getQrReference() {
-		return qrReference;
-	}
-    
+   
     @Override
     public String toString() {
-        String string = "TicketWrapper [id=" + id + ", created=" + created + ", reference=" + reference + ", qrReference=" + qrReference+", shoppingList=" + Arrays.toString(shoppingList.toArray());
+        String string = "TicketWrapper [id=" + id + ", created=" + created + ", reference=" + reference + ", shoppingList=" + Arrays.toString(shoppingList.toArray());
         if (userMobile != null) {
             string += ", userMobile=" + userMobile;
         }
