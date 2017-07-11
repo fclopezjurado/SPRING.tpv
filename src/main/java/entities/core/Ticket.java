@@ -35,7 +35,7 @@ public class Ticket {
     @Id
     private int id;
 
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Calendar created;
 
     @Column(unique = true, nullable = false)
