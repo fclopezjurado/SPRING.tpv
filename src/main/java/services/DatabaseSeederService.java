@@ -278,7 +278,7 @@ public class DatabaseSeederService {
         providerDao.save(provider);
         for (int i = 1; i < 10000; i++) {
             Article article = new Article(String.valueOf(i), "Varios (" + i / 100 + "," + i % 100 + ")", new BigDecimal(i).movePointLeft(2),
-                    "Varios, sin cod. barras", new BigDecimal(i).movePointLeft(2), provider);
+                    "Varios", new BigDecimal(i).movePointLeft(2), provider);
             article.setStock(100000);
             articleDao.save(article);
         }
