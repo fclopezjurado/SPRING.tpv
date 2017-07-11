@@ -5,10 +5,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.List;
 
 import org.junit.Rule;
@@ -26,7 +24,6 @@ import config.TestsApiConfig;
 import entities.core.ShoppingState;
 import entities.core.Ticket;
 import wrappers.CashierClosuresCreationWrapper;
-import wrappers.DayTicketWrapper;
 import wrappers.ShoppingCreationWrapper;
 import wrappers.ShoppingTrackingWrapper;
 import wrappers.ShoppingUpdateWrapper;
@@ -394,8 +391,8 @@ public class TicketResourceFunctionalTesting {
         this.openCashier();
         thrown.expect(new HttpMatcher(HttpStatus.NOT_FOUND));
         String ticketReference = "justTesting-123";
-        new RestBuilder<ShoppingTrackingWrapper[]>(restService.getUrl()).path(Uris.TICKETS).path(Uris.TICKET_TRACKING).pathId(ticketReference)
-                .basicAuth(restService.loginAdmin(), "").clazz(ShoppingTrackingWrapper[].class).get().build();
+        new RestBuilder<ShoppingTrackingWrapper[]>(restService.getUrl()).path(Uris.TICKETS).path(Uris.TICKET_TRACKING)
+                .pathId(ticketReference).basicAuth(restService.loginAdmin(), "").clazz(ShoppingTrackingWrapper[].class).get().build();
     }
 
     @Test
@@ -429,8 +426,7 @@ public class TicketResourceFunctionalTesting {
         assertEquals(ShoppingState.OPENED, shoppingWrapper.getShoppingState());
     }
 
-
-     @Test
+    @Test
     public void testGetTicketTracking() {
         this.openCashier();
 
@@ -468,7 +464,7 @@ public class TicketResourceFunctionalTesting {
         String userMobile = "666000002";
         String pageSize = "1";
         String pageNumber = "1";
- 
+
         TicketReferenceCreatedPageWrapper ticketPage = new RestBuilder<TicketReferenceCreatedPageWrapper>(restService.getUrl())
                 .path(Uris.TICKETS).param("mobile", userMobile).param("size", pageSize).param("page", pageNumber)
                 .basicAuth(restService.loginAdmin(), "").clazz(TicketReferenceCreatedPageWrapper.class).get().build();
