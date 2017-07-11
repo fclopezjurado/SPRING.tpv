@@ -1,5 +1,6 @@
 package controllers;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
@@ -152,9 +153,10 @@ public class TicketController {
         return ticket != null;
     }
 
-    public List<DayTicketWrapper> wholeDayTickets(Calendar dayToGetTickets) {
+    public List<DayTicketWrapper> wholeDayTickets() {
+        int date = Integer.parseInt((new SimpleDateFormat("yyyyMMdd").format(Calendar.getInstance().getTime())));
         List<DayTicketWrapper> dayTicketsList = new ArrayList<>();
-        List<Ticket> ticketList = ticketDao.findByCreated(dayToGetTickets);
+        List<Ticket> ticketList = ticketDao.findByDate(date);
         for (Ticket ticket : ticketList) {
             dayTicketsList.add(new DayTicketWrapper(ticket));
         }

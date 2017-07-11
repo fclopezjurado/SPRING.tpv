@@ -9,17 +9,12 @@ public class DayTicketWrapper {
 
     private double total;
 
-	private byte[] qrReference;
-    
-    
-
     public DayTicketWrapper() {
         super();
     }
 
     public DayTicketWrapper(Ticket ticket) {
         this.reference = ticket.getReference();
-        this.qrReference = ticket.getQrReference();
         
         this.total = 0;
         if (ticket.getShoppingList() != null) {
@@ -37,10 +32,6 @@ public class DayTicketWrapper {
         return total;
     }
 
-    public byte[] getQrReference() {
-		return qrReference;
-	}
-    
     @Override
     public String toString() {
         return "DayTicketWrapper [reference=" + reference + ", total=" + total + "]";

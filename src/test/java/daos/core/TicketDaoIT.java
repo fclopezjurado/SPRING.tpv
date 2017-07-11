@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import org.junit.Test;
@@ -43,9 +44,9 @@ public class TicketDaoIT {
     }
 
     @Test
-    public void testFirstByCreated() {
-        Calendar today = Calendar.getInstance();
-        assertTrue(6 >= ticketDao.findByCreated(today).size());
+    public void testFirstByDate() {
+        int date = Integer.parseInt((new SimpleDateFormat("yyyyMMdd").format(Calendar.getInstance().getTime())));
+        assertTrue(6 >= ticketDao.findByDate(date).size());
     }
 
     @Test

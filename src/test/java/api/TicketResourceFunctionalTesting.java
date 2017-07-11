@@ -429,37 +429,8 @@ public class TicketResourceFunctionalTesting {
         assertEquals(ShoppingState.OPENED, shoppingWrapper.getShoppingState());
     }
 
-    @Test
-    public void testWholeDayTicketsMalformedDate() {
-        this.openCashier();
-        thrown.expect(new HttpMatcher(HttpStatus.BAD_REQUEST));
-        String date = "09-05-2017";
-        new RestBuilder<DayTicketWrapper[]>(restService.getUrl()).path(Uris.TICKETS).path(Uris.DAY_TICKETS).pathId(date).basicAuth(restService.loginAdmin(), "")
-                .clazz(DayTicketWrapper[].class).get().build();
-    }
 
-    //TODO Es complicado mantener la bd contolada sin borrar todo, este test es dificil
-    public void testWholeDayTickets() {
-        this.openCashier();
-        int totalNumTickets = 6;
-        double totalTicketsPrice = 1294.09;
-
-        SimpleDateFormat dateFormatter = new SimpleDateFormat(Constants.US_DATE_FORMAT);
-        Calendar today = Calendar.getInstance();
-        String date = dateFormatter.format(today.getTime());
-        List<DayTicketWrapper> wholeDayTickets = Arrays.asList(new RestBuilder<DayTicketWrapper[]>(restService.getUrl()).path(Uris.TICKETS)
-                .path(Uris.DAY_TICKETS).pathId(date).basicAuth(restService.loginAdmin(), "").clazz(DayTicketWrapper[].class).get().build());
-
-        double total = 0;
-        for (DayTicketWrapper dayTicketWrapper : wholeDayTickets) {
-            total += dayTicketWrapper.getTotal();
-        }
-
-        assertEquals(totalNumTickets, wholeDayTickets.size());
-        assertEquals(totalTicketsPrice, total, 0.01);
-    }
-
-    @Test
+     @Test
     public void testGetTicketTracking() {
         this.openCashier();
 
