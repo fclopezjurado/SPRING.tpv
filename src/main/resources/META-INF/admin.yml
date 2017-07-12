@@ -4,8 +4,8 @@ username: admin
 password: admin
 email: admin@gmail.com
 # Company data
-company: UPM
+company: UMP
 logo: logo_upm.jpg
-nif: 12345678U
+nif: 12345678A
 phone: 123.456.789
-postalAddress: Campus Sur UPM, Calle Alan Turing s/n (Ctra. Valencia km7), 28031 Madrid.
+postalAddress: Calle de Campus Sur

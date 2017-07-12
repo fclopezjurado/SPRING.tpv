@@ -8,7 +8,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
 
@@ -29,8 +28,6 @@ import entities.core.Article;
 import entities.core.Shopping;
 import entities.core.ShoppingState;
 import entities.core.Ticket;
-import entities.core.TicketPK;
-import wrappers.DayTicketWrapper;
 import wrappers.ShoppingCreationWrapper;
 import wrappers.ShoppingTrackingWrapper;
 import wrappers.ShoppingUpdateWrapper;
@@ -65,15 +62,12 @@ public class TicketControllerIT {
         shoppingCreationWrapperList.add(shoppingCreationWrapper);
         ticketCreationWrapper.setShoppingList(shoppingCreationWrapperList);
 
-        long lastTicketId = ticketDao.findFirstByOrderByCreatedDescIdDesc().getId();
-
         TicketCreationResponseWrapper responseWrapper = ticketController.createTicket(ticketCreationWrapper);
         Ticket ticket = ticketDao.findFirstByReference(responseWrapper.getTicketReference());
         List<Shopping> shoppingList = ticket.getShoppingList();
         Shopping shopping = shoppingList.get(0);
         Article article = articleDao.findOne(shoppingCreationWrapper.getProductCode());
 
-        assertEquals(lastTicketId + 1, ticket.getId());
         assertNull(ticket.getUser());
         assertNotNull(shoppingList);
         assertEquals(shoppingCreationWrapper.getProductCode(), shopping.getProduct().getCode());
@@ -101,14 +95,12 @@ public class TicketControllerIT {
         shoppingCreationWrapperList.add(shoppingCreationWrapper);
         ticketCreationWrapper.setShoppingList(shoppingCreationWrapperList);
 
-        long lastTicketId = ticketDao.findFirstByOrderByCreatedDescIdDesc().getId();
 
         TicketCreationResponseWrapper responseWrapper = ticketController.createTicket(ticketCreationWrapper);
         Ticket ticket = ticketDao.findFirstByReference(responseWrapper.getTicketReference());
         List<Shopping> shoppingList = ticket.getShoppingList();
         Shopping shopping = shoppingList.get(0);
 
-        assertEquals(lastTicketId + 1, ticket.getId());
         assertNotNull(ticket.getUser());
         assertNotNull(shoppingList);
         assertEquals(shoppingCreationWrapper.getProductCode(), shopping.getProduct().getCode());
@@ -222,28 +214,14 @@ public class TicketControllerIT {
 
     @Test
     public void testTicketIsAssignedToInvoice() {
-        Ticket ticketAssignedToAnInvoice = ticketDao.findOne(new TicketPK(3));
+        Ticket ticketAssignedToAnInvoice = ticketDao.findOne(201707113L);
         assertTrue(ticketController.ticketIsAlreadyAssignedToInvoice(ticketAssignedToAnInvoice));
     }
 
     @Test
     public void testTicketIsNotAssignedToInvoice() {
-        Ticket ticketNotAssignedToAnInvoice = ticketDao.findOne(new TicketPK(1));
+        Ticket ticketNotAssignedToAnInvoice = ticketDao.findOne(201707111L);
         assertFalse(ticketController.ticketIsAlreadyAssignedToInvoice(ticketNotAssignedToAnInvoice));
-    }
-
-    @Test
-    public void testGetWholeDayTickets() {
-        int totalNumTickets = 6;
-        double totalTicketsPrice = 1294.09;
-        Calendar today = Calendar.getInstance();
-        List<DayTicketWrapper> dayTicketsList = ticketController.wholeDayTickets(today);
-        double total = 0;
-        for (DayTicketWrapper dayTicketWrapper : dayTicketsList) {
-            total += dayTicketWrapper.getTotal();
-        }
-        assertEquals(totalNumTickets, dayTicketsList.size());
-        assertEquals(totalTicketsPrice, total, 0.01);
     }
 
     @Test
@@ -259,7 +237,7 @@ public class TicketControllerIT {
 
     @Test
     public void testAssociateUserToTicket() {
-        Ticket ticketNotAssignedToAnUser = ticketDao.findOne(new TicketPK(1));
+        Ticket ticketNotAssignedToAnUser = ticketDao.findOne(201707111L);
         assertNull(ticketNotAssignedToAnUser.getUser());
         Long userMobile = 666000002L;
         TicketWrapper ticketWithUser = ticketController.associateUserToTicket(ticketNotAssignedToAnUser.getReference(), userMobile);

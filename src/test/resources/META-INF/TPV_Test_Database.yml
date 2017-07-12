@@ -55,7 +55,7 @@ textilePrintingList:
             
 ticketList:
   - &ticket71
-    id: 71
+    id: 2017071171
     shoppingList:
       - amount: 1
         discount: 0
@@ -70,7 +70,7 @@ ticketList:
         retailPrice: 21
         shoppingState: STARTED
   - &ticket72
-    id: 72
+    id: 2017071172
     shoppingList:
       - amount: 5
         discount: 20

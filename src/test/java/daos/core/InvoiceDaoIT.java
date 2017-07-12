@@ -14,7 +14,6 @@ import config.PersistenceConfig;
 import config.TestsPersistenceConfig;
 import entities.core.Invoice;
 import entities.core.Ticket;
-import entities.core.TicketPK;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {PersistenceConfig.class, TestsPersistenceConfig.class})
@@ -39,7 +38,7 @@ public class InvoiceDaoIT {
 
     @Test
     public void testFindByTicket() {
-        Ticket ticket = ticketDao.findOne(new TicketPK(3));
+        Ticket ticket = ticketDao.findOne(201707113L);
         Invoice invoice = invoiceDao.findByTicketReference(ticket.getReference());
         assertNotNull(invoice);
     }

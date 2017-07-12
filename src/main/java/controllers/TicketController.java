@@ -95,8 +95,8 @@ public class TicketController {
         return new TicketCreationResponseWrapper(ticketPdfByteArray, ticket.getReference());
     }
 
-    private int nextId() {
-        int nextId = 1;
+    private long nextId() {
+        long nextId = 1;
         Ticket ticket = ticketDao.findFirstByOrderByCreatedDescIdDesc();
 
         if (ticket != null) {
@@ -107,7 +107,8 @@ public class TicketController {
             todayMidnight.set(Calendar.MILLISECOND, 0);
 
             if (ticket.getCreated().compareTo(todayMidnight) >= 0) {
-                nextId = ticket.getId() + 1;
+                
+                nextId = ticket.simpleId() + 1;
             }
         }
         return nextId;
@@ -152,9 +153,14 @@ public class TicketController {
         return ticket != null;
     }
 
-    public List<DayTicketWrapper> wholeDayTickets(Calendar dayToGetTickets) {
+    public List<DayTicketWrapper> wholeDayTickets() {
+        Calendar date= Calendar.getInstance();
+        date.set(Calendar.MILLISECOND, 0);
+        date.set(Calendar.SECOND, 0);
+        date.set(Calendar.MINUTE, 0);
+        date.set(Calendar.HOUR, 0);
         List<DayTicketWrapper> dayTicketsList = new ArrayList<>();
-        List<Ticket> ticketList = ticketDao.findByCreated(dayToGetTickets);
+        List<Ticket> ticketList = ticketDao.findByCreatedGreaterThan(date);
         for (Ticket ticket : ticketList) {
             dayTicketsList.add(new DayTicketWrapper(ticket));
         }

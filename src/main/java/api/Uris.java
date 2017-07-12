@@ -26,6 +26,10 @@ public class Uris {
 
     public static final String TICKETS = "/tickets";
 
+    public static final String TICKET_ID_ID = "/{id}";
+
+    public static final String TICKETS_TODAY = "/today";
+
     public static final String TICKET_TRACKING = "/tracking";
 
     public static final String DAY_TICKETS = "/day_tickets";

@@ -5,28 +5,30 @@ import entities.core.Ticket;
 
 public class DayTicketWrapper {
 
+    private long id;
+
     private String reference;
 
     private double total;
 
-	private byte[] qrReference;
-    
-    
-
     public DayTicketWrapper() {
-        super();
     }
 
     public DayTicketWrapper(Ticket ticket) {
+        this.id = ticket.getId();
+
         this.reference = ticket.getReference();
-        this.qrReference = ticket.getQrReference();
-        
+
         this.total = 0;
         if (ticket.getShoppingList() != null) {
             for (Shopping shopping : ticket.getShoppingList()) {
                 this.total += shopping.getShoppingTotal();
             }
         }
+    }
+
+    public long getId() {
+        return id;
     }
 
     public String getReference() {
@@ -37,10 +39,6 @@ public class DayTicketWrapper {
         return total;
     }
 
-    public byte[] getQrReference() {
-		return qrReference;
-	}
-    
     @Override
     public String toString() {
         return "DayTicketWrapper [reference=" + reference + ", total=" + total + "]";

@@ -15,7 +15,7 @@ public class Invoice {
     @Id
     private int id;
 
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Calendar created;
 
     @OneToOne

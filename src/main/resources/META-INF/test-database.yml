@@ -267,7 +267,7 @@ categoryCompositeList:
       - *c2  
       
 ticketList:
-  - id: 1
+  - id: 201707111
     reference : ticket1
     shoppingList:
       - amount: 1
@@ -294,7 +294,7 @@ ticketList:
         description: article3
         retailPrice: 23
         shoppingState: OPENED
-  - id: 2
+  - id: 201707112
     reference : ticket2
     shoppingList:
       - amount: 1
@@ -323,7 +323,7 @@ ticketList:
         shoppingState: COMMITTED
     user: *user666000003
   - &ticket3
-    id: 3
+    id: 201707113
     reference : ticket3
     shoppingList:
       - amount: 1
@@ -352,7 +352,7 @@ ticketList:
         shoppingState: COMMITTED
     user: *user666000003
   - &ticket4
-    id: 4
+    id: 201707114
     reference : ticket4
     shoppingList:
       - amount: 1
@@ -380,7 +380,7 @@ ticketList:
         retailPrice: 23
         shoppingState: OPENED
     user: *user666000002
-  - id: 5
+  - id: 201707115
     reference : ticket5
     shoppingList:
       - amount: 1
@@ -408,7 +408,7 @@ ticketList:
         retailPrice: 23
         shoppingState: STARTED
     user: *user666000002
-  - id: 6
+  - id: 201707116
     reference : ticket6
     shoppingList:
       - amount: 1

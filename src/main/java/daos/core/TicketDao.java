@@ -8,15 +8,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import entities.core.Ticket;
-import entities.core.TicketPK;
 
-public interface TicketDao extends JpaRepository<Ticket, TicketPK> {
+public interface TicketDao extends JpaRepository<Ticket, Long> {
 
     public Ticket findFirstByOrderByCreatedDescIdDesc();
     
     public Ticket findFirstByReference(String reference);
     
-    public List<Ticket> findByCreated(Calendar created);
-    
-    public Page<Ticket> findByUserMobile(long mobile, Pageable pageable);
+   public Page<Ticket> findByUserMobile(long mobile, Pageable pageable);
+
+    public List<Ticket> findByCreatedGreaterThan(Calendar date);
 }

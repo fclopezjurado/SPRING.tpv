@@ -5,10 +5,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.List;
 
 import org.junit.Rule;
@@ -26,7 +24,6 @@ import config.TestsApiConfig;
 import entities.core.ShoppingState;
 import entities.core.Ticket;
 import wrappers.CashierClosuresCreationWrapper;
-import wrappers.DayTicketWrapper;
 import wrappers.ShoppingCreationWrapper;
 import wrappers.ShoppingTrackingWrapper;
 import wrappers.ShoppingUpdateWrapper;
@@ -394,8 +391,8 @@ public class TicketResourceFunctionalTesting {
         this.openCashier();
         thrown.expect(new HttpMatcher(HttpStatus.NOT_FOUND));
         String ticketReference = "justTesting-123";
-        new RestBuilder<ShoppingTrackingWrapper[]>(restService.getUrl()).path(Uris.TICKETS).path(Uris.TICKET_TRACKING).pathId(ticketReference)
-                .basicAuth(restService.loginAdmin(), "").clazz(ShoppingTrackingWrapper[].class).get().build();
+        new RestBuilder<ShoppingTrackingWrapper[]>(restService.getUrl()).path(Uris.TICKETS).path(Uris.TICKET_TRACKING)
+                .pathId(ticketReference).basicAuth(restService.loginAdmin(), "").clazz(ShoppingTrackingWrapper[].class).get().build();
     }
 
     @Test
@@ -427,36 +424,6 @@ public class TicketResourceFunctionalTesting {
 
         assertEquals(shoppingCreationWrapper.getProductCode(), shoppingWrapper.getProductCode());
         assertEquals(ShoppingState.OPENED, shoppingWrapper.getShoppingState());
-    }
-
-    @Test
-    public void testWholeDayTicketsMalformedDate() {
-        this.openCashier();
-        thrown.expect(new HttpMatcher(HttpStatus.BAD_REQUEST));
-        String date = "09-05-2017";
-        new RestBuilder<DayTicketWrapper[]>(restService.getUrl()).path(Uris.TICKETS).path(Uris.DAY_TICKETS).pathId(date).basicAuth(restService.loginAdmin(), "")
-                .clazz(DayTicketWrapper[].class).get().build();
-    }
-
-    //TODO Es complicado mantener la bd contolada sin borrar todo, este test es dificil
-    public void testWholeDayTickets() {
-        this.openCashier();
-        int totalNumTickets = 6;
-        double totalTicketsPrice = 1294.09;
-
-        SimpleDateFormat dateFormatter = new SimpleDateFormat(Constants.US_DATE_FORMAT);
-        Calendar today = Calendar.getInstance();
-        String date = dateFormatter.format(today.getTime());
-        List<DayTicketWrapper> wholeDayTickets = Arrays.asList(new RestBuilder<DayTicketWrapper[]>(restService.getUrl()).path(Uris.TICKETS)
-                .path(Uris.DAY_TICKETS).pathId(date).basicAuth(restService.loginAdmin(), "").clazz(DayTicketWrapper[].class).get().build());
-
-        double total = 0;
-        for (DayTicketWrapper dayTicketWrapper : wholeDayTickets) {
-            total += dayTicketWrapper.getTotal();
-        }
-
-        assertEquals(totalNumTickets, wholeDayTickets.size());
-        assertEquals(totalTicketsPrice, total, 0.01);
     }
 
     @Test
@@ -497,7 +464,7 @@ public class TicketResourceFunctionalTesting {
         String userMobile = "666000002";
         String pageSize = "1";
         String pageNumber = "1";
- 
+
         TicketReferenceCreatedPageWrapper ticketPage = new RestBuilder<TicketReferenceCreatedPageWrapper>(restService.getUrl())
                 .path(Uris.TICKETS).param("mobile", userMobile).param("size", pageSize).param("page", pageNumber)
                 .basicAuth(restService.loginAdmin(), "").clazz(TicketReferenceCreatedPageWrapper.class).get().build();

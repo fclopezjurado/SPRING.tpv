@@ -4,8 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.util.Calendar;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +31,7 @@ public class TicketDaoIT {
     @Test
     public void testFindFirstByOrderByCreatedDescIdDesc() {
         Ticket ticket = ticketDao.findFirstByOrderByCreatedDescIdDesc();
-        assertEquals(6, ticket.getId());
+        assertEquals(201707116, ticket.getId());
     }
 
     @Test
@@ -42,11 +40,6 @@ public class TicketDaoIT {
         assertEquals(ticket, ticketDao.findFirstByReference(ticket.getReference()));
     }
 
-    @Test
-    public void testFirstByCreated() {
-        Calendar today = Calendar.getInstance();
-        assertTrue(6 >= ticketDao.findByCreated(today).size());
-    }
 
     @Test
     public void testFindByUserMobile() {

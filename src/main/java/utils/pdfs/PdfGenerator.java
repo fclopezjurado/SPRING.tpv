@@ -33,12 +33,12 @@ public class PdfGenerator {
     public byte[] generate(Ticket ticket) {
         final String path = "/tickets/ticket-";
 
-        PdfBuilder pdf = new PdfBuilder(path + ticket.getDate() + ticket.getId()).pageTermic();
+        PdfBuilder pdf = new PdfBuilder(path + ticket.getId()).pageTermic();
         pdf.addImage(company.getLogo());
 
         pdf.paragraphEmphasized("Tfno: " + company.getPhone()).paragraph("NIF: " + company.getNif()).paragraph(company.getPostalAddress());
 
-        pdf.barCode(ticket.getDate() + "" + ticket.getId()).separator();
+        pdf.barCode("" + ticket.getId()).separator();
 
         SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT);
         pdf.paragraphEmphasized(formatter.format(ticket.getCreated().getTimeInMillis()));

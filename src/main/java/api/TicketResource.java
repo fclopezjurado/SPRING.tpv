@@ -1,8 +1,5 @@
 package api;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
 
@@ -20,7 +17,6 @@ import api.exceptions.TicketShoppingListEmptyException;
 import api.exceptions.TicketShoppingAmountInvalidFieldException;
 import api.exceptions.TicketShoppingAmountForUpdateInvalidFieldException;
 import api.exceptions.TicketShoppingDiscountInvalidFieldException;
-import api.exceptions.DateMalformedException;
 import api.exceptions.StockNotEnoughException;
 import api.exceptions.ProductCodeNotFoundException;
 import api.exceptions.TicketProductCodeNotFoundException;
@@ -160,6 +156,11 @@ public class TicketResource {
         return ticketController.createTicket(ticketCreationWrapper);
     }
 
+    @RequestMapping(value = Uris.TICKETS_TODAY, method = RequestMethod.GET)
+    public List<DayTicketWrapper> getWholeDayTickets() {
+        return ticketController.wholeDayTickets();
+    }
+
     @RequestMapping(value = Uris.TICKET_REFERENCE_ID, method = RequestMethod.PATCH)
     public TicketReferenceWrapper updateTicket(@PathVariable String reference, @RequestBody TicketUpdateWrapper ticketUpdateWrapper)
             throws TicketReferenceNotFoundException, TicketProductCodeNotFoundException, TicketShoppingAmountForUpdateInvalidFieldException,
@@ -218,22 +219,6 @@ public class TicketResource {
         checkTicketReferenceExists(reference);
 
         return new TicketWrapper(ticketController.getTicket(reference));
-    }
-
-    @RequestMapping(value = Uris.DAY_TICKETS + Uris.TICKET_DATE_ID, method = RequestMethod.GET)
-    public List<DayTicketWrapper> getWholeDayTickets(@PathVariable String date) throws DateMalformedException {
-        String dateFormat = Constants.US_DATE_FORMAT;
-        SimpleDateFormat dateFormatter = new SimpleDateFormat(dateFormat);
-        if (!date.matches(Constants.US_DATE_REGEX)) {
-            throw new DateMalformedException(dateFormat, "Date sent: " + date);
-        }
-        Calendar dayToGetTickets = Calendar.getInstance();
-        try {
-            dayToGetTickets.setTime(dateFormatter.parse(date));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return ticketController.wholeDayTickets(dayToGetTickets);
     }
 
     @RequestMapping(value = Uris.TICKET_TRACKING + Uris.TICKET_REFERENCE_ID, method = RequestMethod.GET)
