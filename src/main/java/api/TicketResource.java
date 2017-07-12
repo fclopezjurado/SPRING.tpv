@@ -156,11 +156,6 @@ public class TicketResource {
         return ticketController.createTicket(ticketCreationWrapper);
     }
 
-    @RequestMapping(value = Uris.TICKET_ID_ID, method = RequestMethod.GET)
-    public List<DayTicketWrapper> readTicketById() {
-        return ticketController.wholeDayTickets();
-    }
-
     @RequestMapping(value = Uris.TICKETS_TODAY, method = RequestMethod.GET)
     public List<DayTicketWrapper> getWholeDayTickets() {
         return ticketController.wholeDayTickets();
