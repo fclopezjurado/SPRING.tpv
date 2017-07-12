@@ -156,6 +156,16 @@ public class TicketResource {
         return ticketController.createTicket(ticketCreationWrapper);
     }
 
+    @RequestMapping(value = Uris.TICKET_ID_ID, method = RequestMethod.GET)
+    public List<DayTicketWrapper> readTicketById() {
+        return ticketController.wholeDayTickets();
+    }
+
+    @RequestMapping(value = Uris.TICKETS_TODAY, method = RequestMethod.GET)
+    public List<DayTicketWrapper> getWholeDayTickets() {
+        return ticketController.wholeDayTickets();
+    }
+
     @RequestMapping(value = Uris.TICKET_REFERENCE_ID, method = RequestMethod.PATCH)
     public TicketReferenceWrapper updateTicket(@PathVariable String reference, @RequestBody TicketUpdateWrapper ticketUpdateWrapper)
             throws TicketReferenceNotFoundException, TicketProductCodeNotFoundException, TicketShoppingAmountForUpdateInvalidFieldException,
@@ -214,11 +224,6 @@ public class TicketResource {
         checkTicketReferenceExists(reference);
 
         return new TicketWrapper(ticketController.getTicket(reference));
-    }
-
-    @RequestMapping(value ="/today", method = RequestMethod.GET)
-    public List<DayTicketWrapper> getWholeDayTickets() {
-        return ticketController.wholeDayTickets();
     }
 
     @RequestMapping(value = Uris.TICKET_TRACKING + Uris.TICKET_REFERENCE_ID, method = RequestMethod.GET)
