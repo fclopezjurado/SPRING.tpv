@@ -3,4 +3,9 @@ mobile: 123456789
 username: admin
 password: admin
 email: admin@gmail.com
-
+# Company data
+company: UMP
+logo: logo_upm.jpg
+nif: 12345678A
+phone: 123.456.789
+postalAddress: Calle de Campus Sur
