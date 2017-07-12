@@ -22,7 +22,7 @@ public class TicketPK implements Serializable {
         this.date = date;
         this.id = id;
     }
-
+    
     public long getId() {
         return id;
     }
