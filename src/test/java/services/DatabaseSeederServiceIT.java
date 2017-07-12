@@ -26,7 +26,6 @@ import daos.core.VoucherDao;
 import daos.users.AuthorizationDao;
 import daos.users.TokenDao;
 import daos.users.UserDao;
-import entities.core.TicketPK;
 import entities.users.Role;
 import entities.users.User;
 
@@ -124,8 +123,8 @@ public class DatabaseSeederServiceIT {
         assertNotNull(textilePrintingDao.findOne("7400000003333"));
         assertEquals(1, textilePrintingDao.count() - previousTextilePrintingsNum);
 
-        assertNotNull(ticketDao.findOne(new TicketPK(71)));
-        assertNotNull(ticketDao.findOne(new TicketPK(72)));
+        assertNotNull(ticketDao.findOne(2017071171L));
+        assertNotNull(ticketDao.findOne(2017071172L));
         assertEquals(2, ticketDao.count() - previousTicketCount);
 
         assertEquals(1, invoiceDao.count() - previousInvoiceCount);
@@ -175,7 +174,7 @@ public class DatabaseSeederServiceIT {
         assertNotNull(textilePrintingDao.findOne("7400000003334"));
         assertEquals(2, textilePrintingDao.count() - previousTextilePrintingsNum);
 
-        assertNotNull(ticketDao.findOne(new TicketPK(73)));
+        assertNotNull(ticketDao.findOne(73L));
         assertEquals(1, ticketDao.count() - previousTicketCount);
 
         assertEquals(invoiceDao.count(), previousInvoiceCount);

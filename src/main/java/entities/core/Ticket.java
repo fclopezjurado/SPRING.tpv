@@ -12,7 +12,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -23,14 +22,12 @@ import entities.users.Encrypting;
 import entities.users.User;
 
 @Entity
-@IdClass(TicketPK.class)
 public class Ticket {
 
+    private static final String DATE_FORMAT = "yyyyMMdd";
+
     @Id
-    private int date;
-    
-    @Id
-    private int id;
+    private long id;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Calendar created;
@@ -48,30 +45,26 @@ public class Ticket {
     public Ticket() {
         created = Calendar.getInstance();
         created.set(Calendar.MILLISECOND, 0);
-        date = Integer.parseInt((new SimpleDateFormat("yyyyMMdd").format(Calendar.getInstance().getTime())));
         reference = new Encrypting().encryptInBase64UrlSafe("" + this.getId() + Long.toString(new Date().getTime()));
         shoppingList = new ArrayList<>();
     }
 
-    public Ticket(int id) {
+    public Ticket(long id) {
         this();
-        this.id = id;
+        String date = new SimpleDateFormat(DATE_FORMAT).format(Calendar.getInstance().getTime());
+        this.id = Long.parseLong(date + id);
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
-
-    public void setDate(int date) {
-        this.date = date;
-    }
-
-    public int getDate() {
-        return date;
+    
+    public long simpleId(){
+        return Long.parseLong(String.valueOf(id).substring(DATE_FORMAT.length()));
     }
 
     public void addShopping(Shopping shopping) {
@@ -114,14 +107,15 @@ public class Ticket {
         return new BigDecimal(total);
     }
 
+
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + id;
-        result = prime * result + date;
+        result = prime * result + (int) (id ^ (id >>> 32));
         return result;
     }
+
 
     @Override
     public boolean equals(Object obj) {
@@ -134,7 +128,7 @@ public class Ticket {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        return (id == ((Ticket) obj).id) && (date == ((Ticket) obj).date);
+        return (id == ((Ticket) obj).id);
     }
 
     @Override

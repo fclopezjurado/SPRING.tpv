@@ -18,9 +18,14 @@ public class TicketTest {
 
     @Test
     public void testTicketId() {
-        Ticket ticket = new Ticket(666);
-        assertEquals(new SimpleDateFormat("yyyyMMdd").format(Calendar.getInstance().getTime()) + "666",
-                ticket.getDate() + "" + ticket.getId());
+        Ticket ticket = new Ticket(99999);
+        assertEquals(new SimpleDateFormat("yyyyMMdd").format(Calendar.getInstance().getTime()) + "99999", "" + ticket.getId());
+    }
+
+    @Test
+    public void testSimpleId() {
+        Ticket ticket = new Ticket(99999);
+        assertEquals(99999, ticket.simpleId());
     }
 
 }

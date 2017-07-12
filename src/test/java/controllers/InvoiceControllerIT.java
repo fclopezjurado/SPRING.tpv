@@ -20,7 +20,6 @@ import daos.core.InvoiceDao;
 import daos.core.TicketDao;
 import entities.core.Invoice;
 import entities.core.Ticket;
-import entities.core.TicketPK;
 import wrappers.InvoiceCreationResponseWrapper;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -43,7 +42,7 @@ public class InvoiceControllerIT {
 
     @Test
     public void testCreateInvoiceWithAtLeastOneInvoiceThisYear() throws IOException {
-        Ticket ticket = ticketDao.findOne(new TicketPK(2));
+        Ticket ticket = ticketDao.findOne(201707112L);
         Invoice latestInvoice = invoiceDao.findFirstByOrderByCreatedDescIdDesc();
         InvoiceCreationResponseWrapper responseWrapper = invoiceController.createInvoice(ticket);
         assertNotNull(responseWrapper);
@@ -55,7 +54,7 @@ public class InvoiceControllerIT {
     public void testCreateInvoiceWithNoInvoicesThisYear() throws IOException {
         List<Invoice> invoiceList = invoiceDao.findAll();
         invoiceDao.deleteAll();
-        Ticket ticket = ticketDao.findOne(new TicketPK(2));
+        Ticket ticket = ticketDao.findOne(201707112L);
         InvoiceCreationResponseWrapper responseWrapper = invoiceController.createInvoice(ticket);
         assertNotNull(responseWrapper);
         int resultInvoiceId = Integer.parseInt(String.valueOf(Calendar.getInstance().get(Calendar.YEAR)) + 1);
