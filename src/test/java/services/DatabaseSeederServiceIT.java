@@ -7,7 +7,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +17,8 @@ import config.PersistenceConfig;
 import config.TestsPersistenceConfig;
 import daos.core.ArticleDao;
 import daos.core.EmbroideryDao;
-import daos.core.InvoiceDao;
 import daos.core.ProviderDao;
 import daos.core.TextilePrintingDao;
-import daos.core.TicketDao;
 import daos.core.VoucherDao;
 import daos.users.AuthorizationDao;
 import daos.users.TokenDao;
@@ -60,12 +57,6 @@ public class DatabaseSeederServiceIT {
     @Autowired
     private TextilePrintingDao textilePrintingDao;
 
-    @Autowired
-    private TicketDao ticketDao;
-
-    @Autowired
-    private InvoiceDao invoiceDao;
-
     @Test
     public void testCreateDefaultAdmin() {
         databaseSeederService.deleteAllExceptAdmin();
@@ -82,10 +73,12 @@ public class DatabaseSeederServiceIT {
 
         assertNotNull(admin);
         assertEquals(Role.ADMIN, authorizationDao.findRoleByUser(admin).get(0));
+        databaseSeederService.seedDatabase(TEST_SEED_YAML_FILE_NAME);
     }
 
     @Test
     public void testTpvTestDatabaseShouldBeParsed() {
+        databaseSeederService.deleteAllExceptAdmin();
         String tpvDatabaseYaml = "TPV_Test_Database.yml";
         long previousUserCount = userDao.count();
         long previousAuthorizationCount = authorizationDao.count();
@@ -95,8 +88,6 @@ public class DatabaseSeederServiceIT {
         long previousArticlesCount = articleDao.count();
         long previousEmbroideryCount = embroideryDao.count();
         long previousTextilePrintingsNum = textilePrintingDao.count();
-        long previousTicketCount = ticketDao.count();
-        long previousInvoiceCount = invoiceDao.count();
 
         databaseSeederService.seedDatabase(tpvDatabaseYaml);
 
@@ -123,17 +114,15 @@ public class DatabaseSeederServiceIT {
         assertNotNull(textilePrintingDao.findOne("7400000003333"));
         assertEquals(1, textilePrintingDao.count() - previousTextilePrintingsNum);
 
-        assertNotNull(ticketDao.findOne(2017071171L));
-        assertNotNull(ticketDao.findOne(2017071172L));
-        assertEquals(2, ticketDao.count() - previousTicketCount);
-
-        assertEquals(1, invoiceDao.count() - previousInvoiceCount);
+        databaseSeederService.deleteAllExceptAdmin();
+        databaseSeederService.seedDatabase(TEST_SEED_YAML_FILE_NAME);
     }
 
     @Test
     public void testNotAllEntitiesYaml() {
         // YAML which only contains 2 users, 1 token, 1 embroidery
         // 2 textilePrintings and 1 ticket
+        databaseSeederService.deleteAllExceptAdmin();
         String notAllEntitiesYaml = "TPV_Test_Not_All_Entities.yml";
         long previousUserCount = userDao.count();
         long previousAuthorizationCount = authorizationDao.count();
@@ -143,8 +132,6 @@ public class DatabaseSeederServiceIT {
         long previousArticlesCount = articleDao.count();
         long previousEmbroideryCount = embroideryDao.count();
         long previousTextilePrintingsNum = textilePrintingDao.count();
-        long previousTicketCount = ticketDao.count();
-        long previousInvoiceCount = invoiceDao.count();
 
         databaseSeederService.seedDatabase(notAllEntitiesYaml);
 
@@ -174,11 +161,9 @@ public class DatabaseSeederServiceIT {
         assertNotNull(textilePrintingDao.findOne("7400000003334"));
         assertEquals(2, textilePrintingDao.count() - previousTextilePrintingsNum);
 
-        assertNotNull(ticketDao.findOne(73L));
-        assertEquals(1, ticketDao.count() - previousTicketCount);
-
-        assertEquals(invoiceDao.count(), previousInvoiceCount);
-    }
+        databaseSeederService.deleteAllExceptAdmin();
+        databaseSeederService.seedDatabase(TEST_SEED_YAML_FILE_NAME);
+   }
 
     @Test
     public void testExistentFile() {
@@ -190,9 +175,4 @@ public class DatabaseSeederServiceIT {
         assertFalse(databaseSeederService.existsYamlFile("nonexistent.yml"));
     }
 
-    @After
-    public void tearDown() {
-        databaseSeederService.deleteAllExceptAdmin();
-        databaseSeederService.seedDatabase(TEST_SEED_YAML_FILE_NAME);
-    }
 }
