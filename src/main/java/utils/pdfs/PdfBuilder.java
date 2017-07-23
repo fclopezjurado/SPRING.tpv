@@ -12,6 +12,7 @@ import java.nio.file.Paths;
 import org.apache.logging.log4j.LogManager;
 
 import com.itextpdf.barcodes.Barcode128;
+import com.itextpdf.barcodes.BarcodeEAN;
 import com.itextpdf.barcodes.BarcodeQRCode;
 import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.color.Color;
@@ -80,7 +81,6 @@ public class PdfBuilder {
             document = new Document(new PdfDocument(new PdfWriter(fullPath)), pageSize);
         } catch (FileNotFoundException fnfe) {
             LogManager.getLogger().error("File: " + fnfe);
-            fnfe.printStackTrace();
         }
     }
 
@@ -192,13 +192,41 @@ public class PdfBuilder {
         document.add(table);
         return this;
     }
-    
-    public PdfBuilder header(String header){
+
+    public PdfBuilder header(String header) {
         Paragraph paragraph = new Paragraph(header);
         paragraph.setTextAlignment(TextAlignment.CENTER);
         paragraph.setBold();
         paragraph.setFontSize(TERMIC_FONT_SIZE_EMPHASIZEDD);
         document.add(paragraph);
+        return this;
+    }
+
+    public PdfBuilder prepareTags24() {
+        table = new Table(new float[] {1, 1, 1}, true);
+        table.setBorder(Border.NO_BORDER);
+        document.setMargins(35, 15, 0, 15);
+        return this;
+    }
+
+    public PdfBuilder addTag24(String description, String code) {
+        Cell cell = new Cell();
+        cell.setPaddingTop(10);
+        cell.setMinHeight(84.2F);
+        cell.setBorder(Border.NO_BORDER);
+        cell.setTextAlignment(TextAlignment.CENTER);
+        cell.add(description);
+        if (code != null && !code.isEmpty()) {
+            BarcodeEAN barcode = new BarcodeEAN(document.getPdfDocument());
+            barcode.setCodeType(BarcodeEAN.EAN13);
+            barcode.setCode(code.trim());
+            Image barcodeImage = new Image(barcode.createFormXObject(document.getPdfDocument()));
+            barcodeImage.setWidthPercent(70);
+            barcodeImage.setHorizontalAlignment(HorizontalAlignment.CENTER);
+            cell.add(barcodeImage);
+        }
+        table.addCell(cell);
+        document.add(table);
         return this;
     }
 

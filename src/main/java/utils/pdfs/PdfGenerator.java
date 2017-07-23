@@ -3,11 +3,13 @@ package utils.pdfs;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import entities.core.Invoice;
+import entities.core.Product;
 import entities.core.Shopping;
 import entities.core.ShoppingState;
 import entities.core.Ticket;
@@ -91,5 +93,21 @@ public class PdfGenerator {
         
         return pdf.build();
     }
+    
+    public byte[] generateLabels24(List<Product> products) {
+        final String path = "/labels/label-";
+
+        PdfBuilder pdf = new PdfBuilder(path);
+        
+        pdf.prepareTags24();
+        
+        for (Product product : products) {
+            pdf.addTag24(product.getDescription(), product.getCode());
+        }
+       
+        return pdf.build();
+    }
+
+
 
 }
