@@ -55,7 +55,7 @@ public class PdfBuilderTest {
     }
 
     @Test
-    public void testBuildLabel1() {
+    public void testBuildLabel24a() {
         PdfBuilder pdf = new PdfBuilder("/test/label");
         pdf.prepareTags24();
         pdf.addTag24("Zapato Niño Colegio T25", "0000150250003");
@@ -87,7 +87,7 @@ public class PdfBuilderTest {
         pdf.build();
     }
     @Test
-    public void testBuildLabel2() {
+    public void testBuildLabel24b() {
         PdfBuilder pdf = new PdfBuilder("/test/label");
         pdf.prepareTags24();
         pdf.addTag24("Zapato Niño Colegio T34", "0000150340001");
@@ -105,11 +105,63 @@ public class PdfBuilderTest {
         pdf.addTag24("Zapato Niño Colegio T39", "0000150390006");
         pdf.addTag24("Zapato Niño Colegio T39", "0000150390006");
         pdf.addTag24("Zapato Niño Colegio T39", "0000150390006");
-        pdf.addTag24("Zapato Niño Colegio T40", "0000150390005");
-        pdf.addTag24("Zapato Niño Colegio T40", "0000150390005");
+        pdf.addTag24("Zapato Niño Colegio T40", "0000150400005");
+        pdf.addTag24("Zapato Niño Colegio T40", "0000150400005");
         pdf.addTag24("-", null);
+        pdf.addTag24("-", null); //Tienen que ser multiplos de 3
+        pdf.build();
+    }
+    @Test
+    public void testBuildLabel24c() {
+        PdfBuilder pdf = new PdfBuilder("/test/label");
+        pdf.prepareTags24();
+        pdf.addTag24("Zapato Niña Colegio T24", "8400000151245");
+        pdf.addTag24("Zapato Niña Colegio T24", "8400000151245");
+        pdf.addTag24("Zapato Niña Colegio T25", "8400000151252");
+        pdf.addTag24("Zapato Niña Colegio T25", "8400000151252");
+        
+        pdf.addTag24("Zapato Niña Colegio T26", "8400000151269");
+        pdf.addTag24("Zapato Niña Colegio T26", "8400000151269");
+        pdf.addTag24("Zapato Niña Colegio T26", "8400000151269");
+        pdf.addTag24("Zapato Niña Colegio T27", "8400000151276");
+        pdf.addTag24("Zapato Niña Colegio T27", "8400000151276");
+        pdf.addTag24("Zapato Niña Colegio T27", "8400000151276");
+
+        pdf.addTag24("Zapato Niña Colegio T28", "8400000151283");
+        pdf.addTag24("Zapato Niña Colegio T28", "8400000151283");
+        pdf.addTag24("Zapato Niña Colegio T29", "8400000151290");
+        pdf.addTag24("Zapato Niña Colegio T29", "8400000151290");
+        pdf.addTag24("Zapato Niña Colegio T30", "8400000151306");
+        pdf.addTag24("Zapato Niña Colegio T30", "8400000151306");
+        
+        pdf.addTag24("Zapato Niña Colegio T31", "8400000151313");
+        pdf.addTag24("Zapato Niña Colegio T31", "8400000151313");
+        pdf.addTag24("Zapato Niña Colegio T32", "8400000151320");
+        pdf.addTag24("Zapato Niña Colegio T32", "8400000151320");
+
+        pdf.addTag24("Zapato Niña Colegio T33", "8400000151337");
+        pdf.addTag24("Zapato Niña Colegio T33", "8400000151337");
+        pdf.addTag24("Zapato Niña Colegio T33", "8400000151337");
         pdf.addTag24("-", null);
         pdf.build();
     }
+    
+    @Test
+    public void testBuildLabel24d() {
+        PdfBuilder pdf = new PdfBuilder("/test/label");
+        pdf.prepareTags24();
+        pdf.addTag24("Zapato Niña Colegio T34", "8400000151344");
+        pdf.addTag24("Zapato Niña Colegio T34", "8400000151344");
+        pdf.addTag24("Zapato Niña Colegio T34", "8400000151344");
+        
+        pdf.addTag24("Zapato Niña Colegio T35", "8400000151351");
+        pdf.addTag24("Zapato Niña Colegio T35", "8400000151351");
+        pdf.addTag24("Zapato Niña Colegio T36", "8400000151368");
+        pdf.addTag24("Zapato Niña Colegio T36", "8400000151368");
+        pdf.addTag24("Zapato Niña Colegio T37", "8400000151375");
+        pdf.addTag24("Zapato Niña Colegio T37", "8400000151375");
+        pdf.build();
+    }
+
 
 }

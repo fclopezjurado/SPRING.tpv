@@ -12,12 +12,12 @@ public class Barcode {
     }
 
     public static void main(String[] args) {
-        for (int i = 25; i <= 40; i += 1) {
-            String base = "0000000150";
+        for (int i = 24; i <= 40; i += 1) {
+            String base = "8400000151";
             if (i < 10) {
                 base += "0";
             }
-            System.out.println(base + (i) + new Barcode().ean13ControlCodeCalculator(base + (i) + "000"));
+            System.out.println(base + (i) + new Barcode().ean13ControlCodeCalculator(base + (i)));
         }
     }
 
